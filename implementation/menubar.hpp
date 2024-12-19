@@ -1,11 +1,5 @@
-#ifndef TOOLBAR_HPP
-#define TOOLBAR_HPP
-
-// #include "api_photoshop.hpp"
-// #include "api_bar.hpp"
-// #include "sfm_prot.hpp"
-// #include "canvas.hpp"
-//#include "photoshop.hpp"
+#ifndef MENUBAR_HPP
+#define MENUBAR_HPP
 
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_photoshop.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_bar.hpp"
@@ -19,7 +13,7 @@
 
 namespace psapi {
 
-class ToolBar : public IBar {
+class MenuBar : public IBar {
 private:
     wid_t id;
     bool is_active;
@@ -29,9 +23,9 @@ private:
     sfm::Sprite sprite;
     sfm::Texture texture;
     const IWindow* parent;
-    std::vector<std::unique_ptr<IBarButton>> toolbar;
+    std::vector<std::unique_ptr<IMenuButton>> menubar;
 public:
-    ToolBar(vec2i pos_, vec2u size_) : id(kToolBarWindowId), is_active(true), pos(pos_), size(size_), scale(vec2f(1, 1)), parent(nullptr), toolbar() {
+    MenuBar(vec2i pos_, vec2u size_) : id(kMenuBarWindowId), is_active(true), pos(pos_), size(size_), scale(vec2f(1, 1)), parent(nullptr), menubar() {
         // if(!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Pencil.png")) {
         //     //throw std::runtime_error("ошибка открытия файла > " + file + "!");
         // }
@@ -41,10 +35,10 @@ public:
         rect.size = size;
         sprite.setTextureRect(rect);
         sprite.setScale(1, 1);
-        sprite.setColor(sfm::Color(255, 255, 255, 255));
+        sprite.setColor(sfm::Color(155, 155, 155, 255));
         sprite.setPosition(pos.x, pos.y);
     }
-    ~ToolBar() = default;
+    ~MenuBar() = default;
 
     virtual void draw(IRenderWindow* renderWindow);
 
@@ -84,10 +78,10 @@ public:
     virtual void setPos(const vec2i& pos);
 };
 
-class ToolBarAction : public AAction {
-    std::vector<std::unique_ptr<IBarButton>>* toolbar;
+class MenuBarAction : public AAction {
+    std::vector<std::unique_ptr<IMenuButton>>* menubar;
 public:
-    ToolBarAction(std::vector<std::unique_ptr<IBarButton>>* toolbar_, const IRenderWindow *renderWindow_, const Event &event_);
+    MenuBarAction(std::vector<std::unique_ptr<IMenuButton>>* toolbar_, const IRenderWindow *renderWindow_, const Event &event_);
     bool execute(const Key &key) override;
     bool isUndoable(const Key &key) override;
 };

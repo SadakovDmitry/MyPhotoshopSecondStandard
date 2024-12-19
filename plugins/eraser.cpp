@@ -103,12 +103,16 @@ namespace psapi {
         vec2i canvas_pos   = canvas->getPos();
         vec2i cur_pos;
 
+        IThicknessOption* thickness_bar = static_cast<IThicknessOption*>(getRootWindow()->getWindowById(kOptionsBarWindowId)->getWindowById(kThicknessBarId));
+        if(thickness_bar) {
+            eraser->thickness = thickness_bar->getThickness();
+        }
+
         if (eraser->getState() == IBarButton::State::Press) {
-            // std::cout << "\033[33mexecute eraser\033[0m" << std::endl;
             if (eraser->points_arr.size() < 4) {
                 eraser->points_arr.push_back(mouse_pos);
             } else {
-                int radius = 10;
+                int radius = static_cast<int>(eraser->thickness);
                 vec2i last_pos = eraser->points_arr[3];
                 eraser->points_arr.erase(eraser->points_arr.begin());
                 eraser->points_arr.push_back(mouse_pos);
@@ -124,12 +128,7 @@ namespace psapi {
                                 }
                             }
                         }
-                            //temp_layer->setPixel(point, colorPalette->getColor());
                     }
-                }
-                if ((mouse_pos.x - last_pos.x) * (mouse_pos.x - last_pos.x) +
-                    (mouse_pos.y - last_pos.y) * (mouse_pos.y - last_pos.y) >= 10000) {
-                    std::cerr << "LOLOLOLOLOLOLOLOLO\n";
                 }
             }
         }
@@ -140,7 +139,7 @@ namespace psapi {
         __attribute__((visibility("default"))) bool loadPlugin() {
             auto toolbar = static_cast<IBar*>(getRootWindow()->getWindowById(kToolBarWindowId));
             // ChildInfo info = toolbar->getNextChildInfo();
-            vec2i pos = {5, 55};
+            vec2i pos = {toolbar->getPos().x, toolbar->getPos().y + 50};
             vec2u size = {50, 50};
             auto tool = std::make_unique<EraserTool>(pos, size, 2);
 

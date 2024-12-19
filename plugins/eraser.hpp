@@ -25,6 +25,7 @@ class EraserTool : public ABarButton {
 private:
     friend class EraserAction;
     sfm::Color color;
+    float thickness;
     std::vector<vec2i> points_arr;
 
     void updateState(const IRenderWindow *render_window, const Event &event);

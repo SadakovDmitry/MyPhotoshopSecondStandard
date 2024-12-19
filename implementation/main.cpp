@@ -47,43 +47,34 @@ int main() {
     loadPluginfromLib("sprayer.dylib");
     loadPluginfromLib("scrollbar_vert.dylib");
     loadPluginfromLib("scrollbar_hor.dylib");
-    // loadPluginfromLib("blur.dylib");
-    // loadPluginfromLib("brightness.dylib");
+    loadPluginfromLib("filters.dylib");
+    loadPluginfromLib("color_palette.dylib");
+    loadPluginfromLib("thickness.dylib");
+    loadPluginfromLib("opacity_bar.dylib");
 
     std::cout << "Hello!!!\n";
     const float file_height = 1564.0;
     const float file_width = 2332.0;
-    RenderWindow render_window;
+    RenderWindow renderWindow;
     IRootWindow* root_window = getRootWindow();
-    while (render_window.isOpen()) {
-        unsigned long long start = clock();
+    while (renderWindow.isOpen()) {
         sfm::Event event;
-        // std::cerr << "\033[35m              isOpen\033[0m\n";
-        while (render_window.pollEvent(event)) {
-            if (Keyboard::isKeyPressed(Keyboard::Key::Escape)) { render_window.close(); }
-            if (event.type == sfm::Event::Closed) { render_window.close(); }
-            //getRootWindow()->update(&render_window, event);
+        while (renderWindow.pollEvent(event)) {
+            if (Keyboard::isKeyPressed(Keyboard::Key::Escape)) { renderWindow.close(); }
+            if (event.type == sfm::Event::Closed) { renderWindow.close(); }
+            //getRootWindow()->update(&renderWindow, event);
             // unsigned long long start = clock();
             // std::cerr << "\033[34m              event\033[0m\n";
-            getActionController()->execute(root_window->createAction(&render_window, event));
-            // getRootWindow()->draw(&render_window);
+            getActionController()->execute(root_window->createAction(&renderWindow, event));
+            // getRootWindow()->draw(&renderWindow);
             // unsigned long long end = clock();
             // unsigned long long time = ((end - start) * 100000) / CLOCKS_PER_SEC;
             // std::cout << "\033[32mtime: " << time << "\033[0m\n";
-            getRootWindow()->draw(&render_window);
-            render_window.display();
+            getRootWindow()->draw(&renderWindow);
+            renderWindow.display();
         }
-        // unsigned long long end = clock();
-        // unsigned long long time = ((end - start) * 100000) / CLOCKS_PER_SEC;
-        // std::cout << "\033[32mtime: " << time << "\033[0m\n";
-        // if (time >= 11) {
-        //     getchar();
-        // }
-        getRootWindow()->draw(&render_window);
-        render_window.display();
-        unsigned long long end = clock();
-        unsigned long long time = ((end - start) * 100000) / CLOCKS_PER_SEC;
-        //std::cout << "\033[32mtime: " << time << "\033[0m\n";
+        getRootWindow()->draw(&renderWindow);
+        renderWindow.display();
     }
     return 0;
 }

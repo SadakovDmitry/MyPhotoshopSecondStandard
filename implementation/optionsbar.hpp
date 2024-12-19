@@ -1,11 +1,5 @@
-#ifndef TOOLBAR_HPP
-#define TOOLBAR_HPP
-
-// #include "api_photoshop.hpp"
-// #include "api_bar.hpp"
-// #include "sfm_prot.hpp"
-// #include "canvas.hpp"
-//#include "photoshop.hpp"
+#ifndef OPTIONSBAR_HPP
+#define OPTIONSBAR_HPP
 
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_photoshop.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_bar.hpp"
@@ -19,8 +13,9 @@
 
 namespace psapi {
 
-class ToolBar : public IBar {
+class OptionsBar : public IOptionsBar {
 private:
+    friend class OptionsBarAction;
     wid_t id;
     bool is_active;
     vec2i pos;
@@ -29,9 +24,9 @@ private:
     sfm::Sprite sprite;
     sfm::Texture texture;
     const IWindow* parent;
-    std::vector<std::unique_ptr<IBarButton>> toolbar;
+    std::vector<std::unique_ptr<IWindow>> optionsbar;
 public:
-    ToolBar(vec2i pos_, vec2u size_) : id(kToolBarWindowId), is_active(true), pos(pos_), size(size_), scale(vec2f(1, 1)), parent(nullptr), toolbar() {
+    OptionsBar(vec2i pos_, vec2u size_) : id(kOptionsBarWindowId), is_active(true), pos(pos_), size(size_), scale(vec2f(1, 1)), parent(nullptr), optionsbar() {
         // if(!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Pencil.png")) {
         //     //throw std::runtime_error("ошибка открытия файла > " + file + "!");
         // }
@@ -44,11 +39,9 @@ public:
         sprite.setColor(sfm::Color(255, 255, 255, 255));
         sprite.setPosition(pos.x, pos.y);
     }
-    ~ToolBar() = default;
+    ~OptionsBar() = default;
 
     virtual void draw(IRenderWindow* renderWindow);
-
-    // virtual bool update(const IRenderWindow* renderWindow, const Event& event);
 
     virtual wid_t getId() const;
 
@@ -82,12 +75,13 @@ public:
 
     virtual void setSize(const vec2u& size);
     virtual void setPos(const vec2i& pos);
+    virtual void removeAllOptions();
 };
 
-class ToolBarAction : public AAction {
-    std::vector<std::unique_ptr<IBarButton>>* toolbar;
+class OptionsBarAction : public AAction {
+    std::vector<std::unique_ptr<IWindow>>* optionsbar;
 public:
-    ToolBarAction(std::vector<std::unique_ptr<IBarButton>>* toolbar_, const IRenderWindow *renderWindow_, const Event &event_);
+    OptionsBarAction(std::vector<std::unique_ptr<IWindow>>* optionsbar_, const IRenderWindow *renderWindow_, const Event &event_);
     bool execute(const Key &key) override;
     bool isUndoable(const Key &key) override;
 };

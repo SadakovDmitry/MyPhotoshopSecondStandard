@@ -42,6 +42,8 @@ class Image : public IImage {
 public:
     virtual ~Image() = default;
 
+    Image() : image() {}
+    Image(const sf::Image& sf_image) : image(sf_image) {}
     virtual void create(unsigned int width, unsigned int height, const Color &color=Color(0, 0, 0)) override;
     virtual void create(vec2u size, const Color &color=Color(0, 0, 0)) override;
 
@@ -231,59 +233,54 @@ public:
 //     }
 // };
 
-class EllipseShape : public IEllipseShape, public sf::CircleShape {
+class EllipseShape: public IEllipseShape {
+private:
+    sf::CircleShape shape_;
+
+    bool update_image_ = false;
+    std::unique_ptr<IImage> image_;
+
+    void update_image();
+
 public:
-    explicit EllipseShape(const vec2u& size)
-        : sf::CircleShape(size.x / 2.0f) {
-        sf::CircleShape::setScale(1.0f, static_cast<float>(size.y) / size.x);
-    }
+    EllipseShape(unsigned int width, unsigned int height);
+    EllipseShape(const vec2u &size);
 
-    explicit EllipseShape(unsigned int radius)
-        : sf::CircleShape(radius) {}
+    virtual void draw(IRenderWindow *window) const override;
+    virtual void draw(ITexture *texture) const;
 
-    virtual void draw(IRenderWindow* window) const override;
+    virtual void setTexture(const ITexture *texture) override;
 
-    virtual void setTexture(const ITexture* texture) override;
+    virtual void setPosition(const vec2i &pos) override;
+    virtual void setPosition(const vec2f &pos) override;
+    virtual void setPosition(const vec2d &pos) override;
 
-    virtual void setFillColor(const Color& color) override;
-
-    virtual void setPosition(const vec2i& pos) override;
-
-    virtual void setPosition(const vec2f& pos) override;
-
-    virtual void setPosition(const vec2d& pos) override;
-
-    virtual void setScale(const vec2f& scale) override;
-
-    virtual void setSize(const vec2u& size) override;
+    virtual void setScale(const vec2f &scale) override;
+    virtual void setSize(const vec2u &size) override;
 
     virtual void setRotation(float angle) override;
 
-    virtual void setOutlineColor(const Color& color) override;
-
+    virtual void setOutlineColor(const Color &color) override;
     virtual void setOutlineThickness(float thickness) override;
 
-    virtual float getRotation() const override;
+    virtual void setFillColor(const Color &color) override;
 
-    virtual vec2f getScale() const override;
+
+    virtual const IImage *getImage() const override;
 
     virtual vec2f getPosition() const override;
 
-    virtual const Color& getFillColor() const override;
-
+    virtual vec2f getScale() const override;
     virtual vec2u getSize() const override;
 
+    virtual float getRotation() const override;
+
     virtual float getOutlineThickness() const override;
+    virtual const Color &getOutlineColor() const override;
 
-    virtual const Color& getOutlineColor() const override;
+    virtual const Color &getFillColor() const override;
 
-    virtual IImage* getImage() const override;
-
-    virtual void move(const vec2f& offset) override;
-
-    static std::unique_ptr<IEllipseShape> create(const vec2u& size = vec2u(0, 0));
-
-    static std::unique_ptr<IEllipseShape> create(unsigned int radius);
+    virtual void move(const vec2f &offset) override;
 };
 
 class Texture : public ITexture {

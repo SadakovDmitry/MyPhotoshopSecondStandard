@@ -23,6 +23,8 @@ namespace psapi {
 
 class SprayerTool : public ABarButton {
     friend class SprayerAction;
+    sfm::Color color;
+
     void updateState(const IRenderWindow *render_window, const Event &event);
 public:
     SprayerTool(vec2i pos_, vec2u size_, wid_t id_)
@@ -35,6 +37,7 @@ public:
         sprite.setScale(1, 1);
         sprite.setColor(sfm::Color(255, 255, 255, 255));
         sprite.setPosition(pos.x, pos.y);
+        color = {0, 255, 0, 255};
     }
 
     // void action() override ;

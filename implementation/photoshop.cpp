@@ -94,7 +94,7 @@ const IWindow* RootWindow::getWindowById(wid_t id) const {
 }
 
 void RootWindow::draw(IRenderWindow* renderWindow) {
-    // renderWindow->clear();
+    renderWindow->clear();
     for (const auto& window : windows) {
         if (window->isActive()) {
             window->draw(renderWindow);

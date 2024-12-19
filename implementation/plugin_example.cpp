@@ -3,6 +3,8 @@
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_sfm.hpp"
 #include "toolbar.hpp"
 #include "canvas.hpp"
+#include "menubar.hpp"
+#include "optionsbar.hpp"
 #include <dlfcn.h>
 
 using namespace psapi;
@@ -15,8 +17,6 @@ public:
     // ... add other methods
 
     //virtual void draw(RenderWindow& renderWindow) override {}
-
-    //virtual bool update(const RenderWindow& renderWindow, const Event& event) {}
 
     virtual int64_t getId() const override { return kInvalidWindowId; }
 
@@ -38,28 +38,26 @@ public:
 bool loadBasePlugin() {
     std::cout << "in loadbaseplugin:" << getRootWindow() << "\n";
 
-    vec2i pos(5, 5);
+    vec2i pos(5, 55);
     vec2u size(100, 700);
-    // ToolBar bar(pos, size);s
+    // ToolBar bar(pos, size);
     auto toolbar = std::make_unique<psapi::ToolBar>(pos, size);
-//     pos = {5, 5};
-//     size = {50, 50};
-//     auto pencil = std::make_unique<psapi::PencilTool>(pos, size, 1);
-//     pos = {55, 5};
-//     auto eraser = std::make_unique<psapi::EraserTool>(pos, size, 2);
-//     pos = {5, 55};
-//     auto sprayer = std::make_unique<psapi::SprayerTool>(pos, size, 3);
-    pos = {200, 100};
+    pos = {150, 150};
     size = {900, 500};
     vec2u layers_size = {1800, 1000};
     auto canvas = std::make_unique<psapi::Canvas>(pos, size, layers_size);
-//
+    pos = {0, 0};
+    size = {1200, 50};
+    auto menubar = std::make_unique<psapi::MenuBar>(pos, size);
+
+    pos = {1100, 55};
+    size = {100, 700};
+    auto optionsbar = std::make_unique<psapi::OptionsBar>(pos, size);
+
     getRootWindow()->addWindow(std::move(toolbar));
-//     static_cast<ToolBar*>(psapi::getRootWindowlib()->getWindowById(kToolBarWindowId))->addWindow(std::move(pencil));
-//     static_cast<ToolBar*>(psapi::getRootWindowlib()->getWindowById(kToolBarWindowId))->addWindow(std::move(eraser));
-//     static_cast<ToolBar*>(psapi::getRootWindowlib()->getWindowById(kToolBarWindowId))->addWindow(std::move(sprayer));
-//     //psapi::getRootWindowlib()->addWindow(std::move(canvas));
     getRootWindow()->addWindow(std::move(canvas));
+    getRootWindow()->addWindow(std::move(menubar));
+    getRootWindow()->addWindow(std::move(optionsbar));
 
     return true;
 }

@@ -405,114 +405,207 @@ std::unique_ptr<IRenderWindow> RenderWindow::create(unsigned int width, unsigned
 //     }
 // };
 
-    void EllipseShape::draw(IRenderWindow* window) const{
-        // Преобразуем IRenderWindow в sf::RenderWindow для рисования
-        sf::RenderWindow* sfWindow = dynamic_cast<sf::RenderWindow*>(window);
-        if (sfWindow) {
-            sfWindow->draw(*this);
+    void EllipseShape::draw(IRenderWindow *window) const
+    {
+        sf::RenderWindow &render_target = dynamic_cast<RenderWindow*>(window)->window;
+        render_target.draw(shape_);
+    }
+
+    void EllipseShape::draw(ITexture *texture) const
+    {
+        // texture->renderWindow.draw(shape_);
+    }
+
+
+    void EllipseShape::setTexture(const ITexture *texture)
+    {
+        shape_.setTexture(&dynamic_cast<const Texture *>(texture)->texture);
+        update_image_ = true;
+    }
+
+
+    void EllipseShape::setFillColor(const Color &color)
+    {
+        shape_.setFillColor(sf::Color(color.r, color.g, color.b, color.a));
+        update_image_ = true;
+    }
+
+
+    void EllipseShape::setPosition(const vec2i &pos)
+    {
+        shape_.setPosition(sf::Vector2f(pos.x, pos.y));
+        update_image_ = true;
+    }
+
+    void EllipseShape::setPosition(const vec2f &pos)
+    {
+        shape_.setPosition(sf::Vector2f(pos.x, pos.y));
+        update_image_ = true;
+    }
+
+    void EllipseShape::setPosition(const vec2d &pos)
+    {
+        shape_.setPosition(sf::Vector2f(pos.x, pos.y));
+        update_image_ = true;
+    }
+
+
+    void EllipseShape::move(const vec2f &offset)
+    {
+        shape_.move(sf::Vector2f(offset.x, offset.y));
+        update_image_ = true;
+    }
+
+
+    void EllipseShape::setScale(const vec2f &scale)
+    {
+        shape_.setScale(sf::Vector2f(scale.x, scale.y));
+        update_image_ = true;
+    }
+
+    void EllipseShape::setSize(const vec2u &size)
+    {
+        unsigned diameter = std::max(size.x, size.y);
+
+        double scale = static_cast<double>(size.y) / static_cast<double>(size.x);
+        if(diameter != size.x) scale = 1.0 / scale;
+
+        shape_.setRadius(diameter / 2);
+        shape_.setScale(sf::Vector2f(1.0, scale));
+        update_image_ = true;
+    }
+
+
+    void EllipseShape::setRotation(float angle)
+    {
+        shape_.setRotation(angle);
+        update_image_ = true;
+    }
+
+
+    void EllipseShape::setOutlineColor(const Color &color)
+    {
+        shape_.setOutlineColor(sf::Color(color.r, color.g, color.b, color.a));
+        update_image_ = true;
+    }
+
+    void EllipseShape::setOutlineThickness(float thickness)
+    {
+        shape_.setOutlineThickness(thickness);
+        update_image_ = true;
+    }
+
+
+    float EllipseShape::getRotation() const
+    {
+        return shape_.getRotation();
+    }
+
+
+    vec2f EllipseShape::getScale() const
+    {
+        sf::Vector2f scale = shape_.getScale();
+        return vec2f(scale.x, scale.y);
+    }
+
+    vec2u EllipseShape::getSize() const
+    {
+        double radius = shape_.getRadius();
+        return vec2u(2 * radius * shape_.getScale().x,
+                     2 * radius * shape_.getScale().y);
+    }
+
+
+    vec2f EllipseShape::getPosition() const
+    {
+        sf::Vector2f pos = shape_.getPosition();
+        return vec2f(pos.x, pos.y);
+    }
+
+
+    const Color& EllipseShape::getFillColor() const
+    {
+        sf::Color color = shape_.getFillColor();
+        Color sfm_color(color.r, color.g, color.b, color.a);
+        return sfm_color;
+    }
+
+
+    float EllipseShape::getOutlineThickness() const
+    {
+        return shape_.getOutlineThickness();
+    }
+
+    const Color& EllipseShape::getOutlineColor() const
+    {
+        sf::Color color = shape_.getOutlineColor();
+        Color sfm_color = {color.r, color.g, color.b, color.a};
+        return sfm_color;
+    }
+
+
+    const IImage *EllipseShape::getImage() const
+    {
+        if(update_image_)
+        {
+            const_cast<EllipseShape *>(this)->update_image();
         }
+        return image_.get();
     }
 
-    void EllipseShape::setTexture(const ITexture* texture) {
-        const sf::Texture* sfmlTexture = dynamic_cast<const sf::Texture*>(texture);
-        if (sfmlTexture) {
-            sf::CircleShape::setTexture(sfmlTexture);
-        }
+
+    void EllipseShape::update_image()
+    {
+        update_image_ = false;
+        sf::FloatRect global_rect = shape_.getGlobalBounds();
+
+        sf::RenderTexture render_texture;
+        render_texture.create(global_rect.width, global_rect.height);
+
+        sf::Vector2f old_pos = shape_.getPosition();
+        shape_.setPosition(old_pos.x - global_rect.left, old_pos.y - global_rect.top);
+
+        render_texture.clear(sf::Color::Transparent);
+        render_texture.draw(shape_);
+        render_texture.display();
+
+        shape_.setPosition(old_pos);
+
+        sf::Image sf_image = render_texture.getTexture().copyToImage();
+        image_ = std::unique_ptr<IImage>(new Image(sf_image));
+        image_->setPos(vec2i(global_rect.left, global_rect.top));
     }
 
-    void EllipseShape::setFillColor(const Color& color) {
-        sf::CircleShape::setFillColor(sf::Color(color.r, color.g, color.b, color.a));
+
+    EllipseShape::EllipseShape(unsigned int width, unsigned int height)
+    {
+        setSize(vec2u(width, height));
     }
 
-    void EllipseShape::setPosition(const vec2i& pos) {
-        sf::CircleShape::setPosition(static_cast<float>(pos.x), static_cast<float>(pos.y));
+    EllipseShape::EllipseShape(const vec2u &size)
+    {
+        setSize(size);
     }
 
-    void EllipseShape::setPosition(const vec2f& pos) {
-        sf::CircleShape::setPosition(pos.x, pos.y);
+    std::unique_ptr<IEllipseShape> IEllipseShape::create(unsigned int width, unsigned int height)
+    {
+        return std::make_unique<EllipseShape>(width, height);
     }
 
-    void EllipseShape::setPosition(const vec2d& pos) {
-        sf::CircleShape::setPosition(static_cast<float>(pos.x), static_cast<float>(pos.y));
-    }
-
-    void EllipseShape::setScale(const vec2f& scale) {
-        sf::CircleShape::setScale(scale.x, scale.y);
-    }
-
-    void EllipseShape::setSize(const vec2u& size) {
-        sf::CircleShape::setScale(1.0f, static_cast<float>(size.y) / size.x);
-        sf::CircleShape::setRadius(size.x / 2.0f);
-    }
-
-    void EllipseShape::setRotation(float angle) {
-        sf::CircleShape::setRotation(angle);
-    }
-
-    void EllipseShape::setOutlineColor(const Color& color) {
-        sf::CircleShape::setOutlineColor(sf::Color(color.r, color.g, color.b, color.a));
-    }
-
-    void EllipseShape::setOutlineThickness(float thickness) {
-        sf::CircleShape::setOutlineThickness(thickness);
-    }
-
-    float EllipseShape::getRotation() const {
-        return sf::CircleShape::getRotation();
-    }
-
-    vec2f EllipseShape::getScale() const {
-        sf::Vector2f scale = sf::CircleShape::getScale();
-        return { scale.x, scale.y };
-    }
-
-    vec2f EllipseShape::getPosition() const {
-        sf::Vector2f pos = sf::CircleShape::getPosition();
-        return { pos.x, pos.y };
-    }
-
-    const Color& EllipseShape::getFillColor() const {
-        static Color color(0, 0, 0, 0);
-        sf::Color sfmlColor = sf::CircleShape::getFillColor();
-        color = { sfmlColor.r, sfmlColor.g, sfmlColor.b, sfmlColor.a };
-        return color;
-    }
-
-    vec2u EllipseShape::getSize() const {
-        float diameter = sf::CircleShape::getRadius() * 2;
-        return { static_cast<unsigned int>(diameter), static_cast<unsigned int>(diameter) };
-    }
-
-    float EllipseShape::getOutlineThickness() const {
-        return sf::CircleShape::getOutlineThickness();
-    }
-
-    const Color& EllipseShape::getOutlineColor() const {
-        static Color color(0, 0, 0, 0);
-        sf::Color sfmlColor = sf::CircleShape::getOutlineColor();
-        color = { sfmlColor.r, sfmlColor.g, sfmlColor.b, sfmlColor.a };
-        return color;
-    }
-
-    IImage* EllipseShape::getImage() const {
-        throw std::runtime_error("getImage not implemented.");
-    }
-
-    void EllipseShape::move(const vec2f& offset) {
-        sf::CircleShape::move(offset.x, offset.y);
-    }
-
-    std::unique_ptr<IEllipseShape> EllipseShape::create(const vec2u& size) {
+    std::unique_ptr<IEllipseShape> IEllipseShape::create(const vec2u &size)
+    {
         return std::make_unique<EllipseShape>(size);
     }
 
-    std::unique_ptr<IEllipseShape> EllipseShape::create(unsigned int radius) {
-        return std::make_unique<EllipseShape>(radius);
+    std::unique_ptr<IEllipseShape> IEllipseShape::create(unsigned int radius)
+    {
+        return std::make_unique<EllipseShape>(radius * 2, radius * 2);
     }
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 //                                                                         Mouse
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 vec2i Mouse::getPosition() {
     sf::Vector2i pos = sf::Mouse::getPosition();
     return vec2i( pos.x, pos.y);;
@@ -806,6 +899,7 @@ bool Keyboard::isKeyPressed(Key key) {
         // } else {
         //     return texture.loadFromImage(sfImage, sf::IntRect(area.left, area.top, area.width, area.height));
         // }
+        // assert("\033[31m NOT IMPLEMENTED" && 0);
         return false;
     }
 

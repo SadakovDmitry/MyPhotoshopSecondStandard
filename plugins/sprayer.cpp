@@ -79,16 +79,23 @@ namespace psapi {
         ILayer* temp_layer = canvas->getTempLayer();
         vec2i mouse_pos    = canvas->getMousePosition();
         vec2i canvas_pos   = canvas->getPos();
-        // mouse_pos.x -= canvas_pos.x;
-        // mouse_pos.y -= canvas_pos.y;
         vec2i cur_pos;
 
         if (canvas->isPressedLeftMouseButton() && (spray->getState() == IBarButton::State::Press)) {
+            IColorPalette* color_palette = static_cast<IColorPalette*>(getRootWindow()->getWindowById(kOptionsBarWindowId)->getWindowById(kColorPaletteId));
+            IOpacityOption* capacity_bar = static_cast<IOpacityOption*>(getRootWindow()->getWindowById(kOptionsBarWindowId)->getWindowById(kOpacityBarId));
+            if(color_palette) {
+                spray->color.r = static_cast<int>(color_palette->getColor().r);
+                spray->color.g = static_cast<int>(color_palette->getColor().g);
+                spray->color.b = static_cast<int>(color_palette->getColor().b);
+                spray->color.a = static_cast<int>(capacity_bar->getOpacity());
+            }
+            // std::cout << "spray color: " << spray->color.r << " " << spray->color.g << " " <<  static_cast<int>(spray->color.b) << "\n";
             // std::cout << "\033[33mexecute spray\033[0m" << std::endl;
             for (int i = 0; i < 30; i++) {
                 cur_pos.x = mouse_pos.x + (rand() % 20);
                 cur_pos.y = mouse_pos.y + (rand() % 20);
-                temp_layer->setPixel(cur_pos, {0, 0, 0, 255});
+                temp_layer->setPixel(cur_pos, spray->color);
             }
             // std::cout << "\033[32mexecute spray: \033[0m" << mouse_pos.x << ", " << mouse_pos.y << std::endl;
         }
@@ -100,7 +107,7 @@ namespace psapi {
 
             auto toolbar = static_cast<IBar*>(getRootWindow()->getWindowById(kToolBarWindowId));
             // ChildInfo info = toolbar->getNextChildInfo();
-            vec2i pos = {5, 5};
+            vec2i pos = {toolbar->getPos().x, toolbar->getPos().y};
             vec2u size = {50, 50};
             auto tool = std::make_unique<SprayerTool>(pos, size, 3);
 

@@ -8,25 +8,6 @@
 
 namespace psapi {
 
-//     void PencilTool::action() {
-//         srand(time(0));
-//         ICanvas* canvas = static_cast<ICanvas*>(getRootWindow()->getWindowById(kCanvasWindowId));
-//         ILayer* temp_layer = canvas->getTempLayer();
-//         vec2i mouse_pos    = canvas->getMousePosition();
-//         vec2i canvas_pos   = canvas->getPos();
-//         // mouse_pos.x -= canvas_pos.x;
-//         // mouse_pos.y -= canvas_pos.y;
-//         vec2i cur_pos;
-//
-//         if (canvas->isPressedLeftMouseButton()) {
-//             for (int i = 0; i < 30; i++) {
-//                 cur_pos.x = mouse_pos.x + (rand() % 20);
-//                 cur_pos.y = mouse_pos.y + (rand() % 20);
-//                 temp_layer->setPixel(cur_pos, {0, 0, 0, 255});
-//             }
-//         }
-//     }
-
     std::unique_ptr<IAction> PencilTool::createAction(const IRenderWindow *renderWindow_, const Event &event_) {
         return std::make_unique<PencilAction>(this, renderWindow_, event_);
     }
@@ -98,17 +79,30 @@ namespace psapi {
     {
         pencil->updateState(render_window, event);
         ICanvas* canvas = static_cast<ICanvas*>(getRootWindow()->getWindowById(kCanvasWindowId));
+
+        IThicknessOption* thickness_bar = static_cast<IThicknessOption*>(getRootWindow()->getWindowById(kOptionsBarWindowId)->getWindowById(kThicknessBarId));
+        if(thickness_bar) {
+            pencil->thickness = thickness_bar->getThickness();
+        }
+
         ILayer* temp_layer = canvas->getTempLayer();
         vec2i mouse_pos    = canvas->getMousePosition();
         vec2i canvas_pos   = canvas->getPos();
         vec2i cur_pos;
 
         if (pencil->getState() == IBarButton::State::Press) {
-            // std::cout << "\033[33mexecute pencil\033[0m" << std::endl;
+            IColorPalette* color_palette = static_cast<IColorPalette*>(getRootWindow()->getWindowById(kOptionsBarWindowId)->getWindowById(kColorPaletteId));
+            IOpacityOption* capacity_bar = static_cast<IOpacityOption*>(getRootWindow()->getWindowById(kOptionsBarWindowId)->getWindowById(kOpacityBarId));
+            if(color_palette) {
+                pencil->color.r = static_cast<int>(color_palette->getColor().r);
+                pencil->color.g = static_cast<int>(color_palette->getColor().g);
+                pencil->color.b = static_cast<int>(color_palette->getColor().b);
+                pencil->color.a = static_cast<int>(capacity_bar->getOpacity());
+            }
             if (pencil->points_arr.size() < 4) {
                 pencil->points_arr.push_back(mouse_pos);
             } else {
-                int radius = 10;
+                int radius = static_cast<int>(pencil->thickness);
                 vec2i last_pos = pencil->points_arr[3];
                 pencil->points_arr.erase(pencil->points_arr.begin());
                 pencil->points_arr.push_back(mouse_pos);
@@ -124,12 +118,7 @@ namespace psapi {
                                 }
                             }
                         }
-                            //temp_layer->setPixel(point, colorPalette->getColor());
                     }
-                }
-                if ((mouse_pos.x - last_pos.x) * (mouse_pos.x - last_pos.x) +
-                    (mouse_pos.y - last_pos.y) * (mouse_pos.y - last_pos.y) >= 10000) {
-                    std::cerr << "LOLOLOLOLOLOLOLOLO\n";
                 }
             }
         }
@@ -140,7 +129,7 @@ namespace psapi {
         __attribute__((visibility("default"))) bool loadPlugin() {
             auto toolbar = static_cast<IBar*>(getRootWindow()->getWindowById(kToolBarWindowId));
             // ChildInfo info = toolbar->getNextChildInfo();
-            vec2i pos = {55, 5};
+            vec2i pos = {toolbar->getPos().x + 50, toolbar->getPos().y};
             vec2u size = {50, 50};
             auto tool = std::make_unique<PencilTool>(pos, size, 1);
 
