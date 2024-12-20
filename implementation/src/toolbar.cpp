@@ -80,7 +80,7 @@ void ToolBar::finishButtonDraw(IRenderWindow* renderWindow, const IBarButton* bu
 bool ToolBar::unPressAllButtons() {
     for (int i = 0; i < toolbar.size(); i++) {
         //toolbar[i].get()->forceDeactivate();
-        toolbar[i].get()->setState(IBarButton::State::Normal);
+        toolbar[i].get()->setState(ABarButton::State::Normal);
     }
     return true;
 }

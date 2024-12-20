@@ -62,8 +62,8 @@ namespace psapi {
         {
             if (event_.type == Event::MouseButtonPressed) {
                 if (state != IBarButton::State::Press) {
+                    static_cast<ToolBar*>(getRootWindow()->getWindowById(kToolBarWindowId))->unPressAllButtons();
                     state = IBarButton::State::Press;
-                    //static_cast<IBar*>(getRootWindow()->getWindowById(kToolBarWindowId))->unPressAllButtons();
                 } else {
                     state = IBarButton::State::Released;
                 }
