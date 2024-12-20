@@ -9,6 +9,7 @@
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_photoshop.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/photoshop.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/canvas.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_canvas.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_actions.hpp"
 
 #include <cstdint>

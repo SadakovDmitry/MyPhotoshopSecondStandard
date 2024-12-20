@@ -345,7 +345,7 @@ extern "C" {
             // ChildInfo info = menubar->getNextChildInfo();
             vec2i pos = {menubar->getPos().x + 100, menubar->getPos().y};
             vec2u size = {100, 50};
-            auto button = std::make_unique<FiltersButton>(pos, size, 1);
+            auto button = std::make_unique<FiltersButton>(pos, size, kMenuFilterId);
 
             pos = {100, 50};
             size = {100, 20};

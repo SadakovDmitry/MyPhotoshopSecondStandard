@@ -1,13 +1,14 @@
-// #include "api_photoshop.hpp"
-// #include "api_bar.hpp"
+
 #include <dlfcn.h>
 #include "canvas.hpp"
 #include "toolbar.hpp"
 #include <assert.h>
-// #include "sfm_prot.hpp"
 #include "plugin_example.hpp"
 #include "photoshop.hpp"
-#include "ctime"
+#include <QFileDialog>
+#include <QDir>
+#include <QString>
+#include <QApplication>
 
 typedef bool (*LoadPluginFunc)();
 typedef void (*UnloadPluginFunc)();
@@ -40,17 +41,28 @@ void loadPluginfromLib(const std::string& plugin) {
     std::cout << "Plugin loaded successfully!\n";
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    QApplication app(argc, argv);
     loadBasePlugin();
-    loadPluginfromLib("pencil.dylib");
-    loadPluginfromLib("eraser.dylib");
-    loadPluginfromLib("sprayer.dylib");
-    loadPluginfromLib("scrollbar_vert.dylib");
-    loadPluginfromLib("scrollbar_hor.dylib");
-    loadPluginfromLib("filters.dylib");
-    loadPluginfromLib("color_palette.dylib");
-    loadPluginfromLib("thickness.dylib");
-    loadPluginfromLib("opacity_bar.dylib");
+    // loadPluginfromLib("pencil.dylib");
+    // loadPluginfromLib("eraser.dylib");
+    // loadPluginfromLib("sprayer.dylib");
+    // loadPluginfromLib("scrollbar_vert.dylib");
+    // loadPluginfromLib("scrollbar_hor.dylib");
+    // loadPluginfromLib("filters.dylib");
+    // loadPluginfromLib("color_palette.dylib");
+    // loadPluginfromLib("thickness.dylib");
+    // loadPluginfromLib("opacity_bar.dylib");
+    loadPluginfromLib("libpencil.dylib");
+    loadPluginfromLib("liberaser.dylib");
+    loadPluginfromLib("libsprayer.dylib");
+    loadPluginfromLib("libscrollbar_vert.dylib");
+    loadPluginfromLib("libscrollbar_hor.dylib");
+    loadPluginfromLib("libfilters.dylib");
+    loadPluginfromLib("libcolor_palette.dylib");
+    loadPluginfromLib("libthickness.dylib");
+    loadPluginfromLib("libopacity_bar.dylib");
+    loadPluginfromLib("libfiles.dylib");
 
     std::cout << "Hello!!!\n";
     const float file_height = 1564.0;
