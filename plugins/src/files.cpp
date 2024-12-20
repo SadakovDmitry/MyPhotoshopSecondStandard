@@ -31,8 +31,8 @@ namespace psapi {
         }
         hovered_sprite.setTexture(&texture);
         hovered_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        hovered_sprite.setScale(1, 1);
-        hovered_sprite.setColor(sfm::Color(255, 255, 255, 255));
+        hovered_sprite.setScale(1.5, 1.5);
+        hovered_sprite.setColor(sfm::Color(200, 200, 200, 255));
         hovered_sprite.setPosition(pos.x, pos.y);
 
         if (!texture.loadFromFile(file)) {
@@ -40,7 +40,7 @@ namespace psapi {
         }
         pressed_sprite.setTexture(&texture);
         pressed_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        pressed_sprite.setScale(1, 1);
+        pressed_sprite.setScale(1.5, 1.5);
         pressed_sprite.setColor(sfm::Color(150, 150, 150, 255));
         pressed_sprite.setPosition(pos.x, pos.y);
 
@@ -49,7 +49,7 @@ namespace psapi {
         }
         released_sprite.setTexture(&texture);
         released_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        released_sprite.setScale(1, 1);
+        released_sprite.setScale(1.5, 1.5);
         released_sprite.setColor(sfm::Color(255, 255, 255, 255));
         released_sprite.setPosition(pos.x, pos.y);
 
@@ -58,7 +58,7 @@ namespace psapi {
         }
         sprite.setTexture(&texture);
         sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
+        sprite.setScale(1.5, 1.5);
         sprite.setColor(sfm::Color(255, 255, 255, 255));
         sprite.setPosition(pos.x, pos.y);
     }
@@ -70,8 +70,8 @@ namespace psapi {
         }
         hovered_sprite.setTexture(&texture);
         hovered_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        hovered_sprite.setScale(1, 1);
-        hovered_sprite.setColor(sfm::Color(255, 255, 255, 255));
+        hovered_sprite.setScale(1.5, 1.5);
+        hovered_sprite.setColor(sfm::Color(200, 200, 200, 255));
         hovered_sprite.setPosition(pos.x, pos.y);
 
         if (!texture.loadFromFile(file)) {
@@ -79,7 +79,7 @@ namespace psapi {
         }
         pressed_sprite.setTexture(&texture);
         pressed_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        pressed_sprite.setScale(1, 1);
+        pressed_sprite.setScale(1.5, 1.5);
         pressed_sprite.setColor(sfm::Color(150, 150, 150, 255));
         pressed_sprite.setPosition(pos.x, pos.y);
 
@@ -88,7 +88,7 @@ namespace psapi {
         }
         released_sprite.setTexture(&texture);
         released_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        released_sprite.setScale(1, 1);
+        released_sprite.setScale(1.5, 1.5);
         released_sprite.setColor(sfm::Color(255, 255, 255, 255));
         released_sprite.setPosition(pos.x, pos.y);
 
@@ -97,7 +97,7 @@ namespace psapi {
         }
         sprite.setTexture(&texture);
         sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
+        sprite.setScale(1.5, 1.5);
         sprite.setColor(sfm::Color(255, 255, 255, 255));
         sprite.setPosition(pos.x, pos.y);
     }
@@ -257,14 +257,21 @@ namespace psapi {
                                                             QDir::homePath(),
                                                             "Изображения (*.png *.jpg *.bmp);;Все файлы (*.*)");
 
-            // auto fileName = QFileDialog::getSaveFileName(nullptr, QString(), QString(), QString("Image Files (*.png *.jpg)"), nullptr, QFileDialog::DontUseNativeDialog);
             sf::Image image;
             sf::Texture save_texture;
+            save_texture.create(temp_layer->getSize().x, temp_layer->getSize().y);
             sf::Sprite save_sprite;
-            sf::RenderTexture render_texture;
 
-            for(size_t i = 0; i < canvas->getNumLayers(); i++) {
-                image.create(temp_layer->getSize().x, temp_layer->getSize().y, {255, 255, 255, 255});
+            sf::RenderTexture render_texture;
+            if (!render_texture.create(temp_layer->getSize().x, temp_layer->getSize().y)) {
+                std::cerr << "\033[31mОшибка создания RenderTexture: \033[0m\n";
+                return false;
+            }
+
+            render_texture.clear(sf::Color::Transparent);
+
+            for (size_t i = 0; i < canvas->getNumLayers(); i++) {
+                image.create(temp_layer->getSize().x, temp_layer->getSize().y);
 
                 for (uint32_t x = 0; x < temp_layer->getSize().x; x++) {
                     for (uint32_t y = 0; y < temp_layer->getSize().y; y++) {
@@ -273,7 +280,6 @@ namespace psapi {
                     }
                 }
 
-                auto layer = canvas->getLayer(i);
                 save_texture.update(image);
                 save_sprite.setTexture(save_texture);
                 render_texture.draw(save_sprite);
@@ -284,11 +290,12 @@ namespace psapi {
             sf::Image canvasImage = render_texture.getTexture().copyToImage();
 
             if (!fileName.isEmpty()) {
-                std::ofstream file(fileName.toStdString());
                 if (!canvasImage.saveToFile(fileName.toStdString())) {
-                    std::cerr << "\033[31mОшибка сохранения файла: \033[0m" << fileName.toStdString() << "\n";
+                    std::cerr << "\033[31mОшибка сохранения файла: \033[0m"
+                              << fileName.toStdString() << "\n";
                     return false;
                 }
+                std::cout << "Файл успешно сохранён: " << fileName.toStdString() << "\n";
             } else {
                 std::cerr << "Сохранение отменено.\n";
             }
@@ -302,16 +309,16 @@ extern "C" {
         __attribute__((visibility("default"))) bool loadPlugin() {
             auto menubar = static_cast<IBar*>(getRootWindow()->getWindowById(kMenuBarWindowId));
             // ChildInfo info = menubar->getNextChildInfo();
-            vec2i pos = {menubar->getPos().x + 200, menubar->getPos().y};
+            vec2i pos = {menubar->getPos().x + 100, menubar->getPos().y};
             vec2u size = {100, 50};
             auto button = std::make_unique<FileButton>(pos, size, kMenuFileId, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/Files.png");
 
-            pos = {200, 50};
-            size = {100, 20};
+            pos = {104, 50};
+            size = {96, 20};
             auto gaus = std::make_unique<LoadTool>(pos, size, 1, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/load.png");
             button->addMenuItem(std::move(gaus));
 
-            pos = {200, 70};
+            pos = {104, 80};
             auto save_tool = std::make_unique<SaveTool>(pos, size, 2, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/save.png");
             button->addMenuItem(std::move(save_tool));
 

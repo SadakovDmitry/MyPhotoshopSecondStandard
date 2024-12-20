@@ -89,7 +89,8 @@ namespace psapi {
             vec2i mouse_pos = canvas->getMousePosition();
             vec2u rel_pos = {static_cast<unsigned int>(mouse_pos.x + canvas->layer_pos.x - opacity_bar->pos.x),
                              static_cast<unsigned int>(mouse_pos.y + canvas->layer_pos.y - opacity_bar->pos.y)};
-            opacity_bar->opacity = rel_pos.x * 10 / 9;
+            uint32_t max_opacity = 100;
+            opacity_bar->opacity = std::min(max_opacity, rel_pos.x);
 
             opacity_bar->cursor_sprite.setPosition(opacity_bar->last_mouse_pos.x - 5, opacity_bar->pos.y + 22);
         }

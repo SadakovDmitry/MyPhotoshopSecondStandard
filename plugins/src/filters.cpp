@@ -27,8 +27,8 @@ namespace psapi {
         }
         hovered_sprite.setTexture(&texture);
         hovered_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        hovered_sprite.setScale(1, 1);
-        hovered_sprite.setColor(sfm::Color(255, 255, 255, 255));
+        hovered_sprite.setScale(1.5, 1.5);
+        hovered_sprite.setColor(sfm::Color(200, 200, 200, 255));
         hovered_sprite.setPosition(pos.x, pos.y);
 
         if (!texture.loadFromFile(file)) {
@@ -36,7 +36,7 @@ namespace psapi {
         }
         pressed_sprite.setTexture(&texture);
         pressed_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        pressed_sprite.setScale(1, 1);
+        pressed_sprite.setScale(1.5, 1.5);
         pressed_sprite.setColor(sfm::Color(150, 150, 150, 255));
         pressed_sprite.setPosition(pos.x, pos.y);
 
@@ -45,7 +45,7 @@ namespace psapi {
         }
         released_sprite.setTexture(&texture);
         released_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        released_sprite.setScale(1, 1);
+        released_sprite.setScale(1.5, 1.5);
         released_sprite.setColor(sfm::Color(255, 255, 255, 255));
         released_sprite.setPosition(pos.x, pos.y);
 
@@ -54,7 +54,7 @@ namespace psapi {
         }
         sprite.setTexture(&texture);
         sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
+        sprite.setScale(1.5, 1.5);
         sprite.setColor(sfm::Color(255, 255, 255, 255));
         sprite.setPosition(pos.x, pos.y);
     }
@@ -66,8 +66,8 @@ namespace psapi {
         }
         hovered_sprite.setTexture(&texture);
         hovered_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        hovered_sprite.setScale(1, 1);
-        hovered_sprite.setColor(sfm::Color(255, 255, 255, 255));
+        hovered_sprite.setScale(1.5, 1.5);
+        hovered_sprite.setColor(sfm::Color(200, 200, 200, 255));
         hovered_sprite.setPosition(pos.x, pos.y);
 
         if (!texture.loadFromFile(file)) {
@@ -75,7 +75,7 @@ namespace psapi {
         }
         pressed_sprite.setTexture(&texture);
         pressed_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        pressed_sprite.setScale(1, 1);
+        pressed_sprite.setScale(1.5, 1.5);
         pressed_sprite.setColor(sfm::Color(150, 150, 150, 255));
         pressed_sprite.setPosition(pos.x, pos.y);
 
@@ -84,7 +84,7 @@ namespace psapi {
         }
         released_sprite.setTexture(&texture);
         released_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        released_sprite.setScale(1, 1);
+        released_sprite.setScale(1.5, 1.5);
         released_sprite.setColor(sfm::Color(255, 255, 255, 255));
         released_sprite.setPosition(pos.x, pos.y);
 
@@ -93,7 +93,7 @@ namespace psapi {
         }
         sprite.setTexture(&texture);
         sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
+        sprite.setScale(1.5, 1.5);
         sprite.setColor(sfm::Color(255, 255, 255, 255));
         sprite.setPosition(pos.x, pos.y);
     }
@@ -105,8 +105,8 @@ namespace psapi {
         }
         hovered_sprite.setTexture(&texture);
         hovered_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        hovered_sprite.setScale(1, 1);
-        hovered_sprite.setColor(sfm::Color(255, 255, 255, 255));
+        hovered_sprite.setScale(1.5, 1.5);
+        hovered_sprite.setColor(sfm::Color(200, 200, 200, 255));
         hovered_sprite.setPosition(pos.x, pos.y);
 
         if (!texture.loadFromFile(file)) {
@@ -114,7 +114,7 @@ namespace psapi {
         }
         pressed_sprite.setTexture(&texture);
         pressed_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        pressed_sprite.setScale(1, 1);
+        pressed_sprite.setScale(1.5, 1.5);
         pressed_sprite.setColor(sfm::Color(150, 150, 150, 255));
         pressed_sprite.setPosition(pos.x, pos.y);
 
@@ -123,7 +123,7 @@ namespace psapi {
         }
         released_sprite.setTexture(&texture);
         released_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        released_sprite.setScale(1, 1);
+        released_sprite.setScale(1.5, 1.5);
         released_sprite.setColor(sfm::Color(255, 255, 255, 255));
         released_sprite.setPosition(pos.x, pos.y);
 
@@ -132,7 +132,7 @@ namespace psapi {
         }
         sprite.setTexture(&texture);
         sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
+        sprite.setScale(1.5, 1.5);
         sprite.setColor(sfm::Color(255, 255, 255, 255));
         sprite.setPosition(pos.x, pos.y);
     }
@@ -476,20 +476,20 @@ extern "C" {
         __attribute__((visibility("default"))) bool loadPlugin() {
             auto menubar = static_cast<IBar*>(getRootWindow()->getWindowById(kMenuBarWindowId));
             // ChildInfo info = menubar->getNextChildInfo();
-            vec2i pos = {menubar->getPos().x + 100, menubar->getPos().y};
-            vec2u size = {100, 50};
+            vec2i pos = {menubar->getPos().x + 200, menubar->getPos().y};
+            vec2u size = {200, 50};
             auto button = std::make_unique<FiltersButton>(pos, size, kMenuFilterId, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/Filters.png");
 
-            pos = {100, 50};
-            size = {100, 20};
+            pos = {204, 50};
+            size = {96, 20};
             auto gaus = std::make_unique<BlurTool>(pos, size, 1, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/blur.png");
             button->addMenuItem(std::move(gaus));
 
-            pos = {100, 70};
+            pos = {204, 80};
             auto brightness = std::make_unique<BrightnessTool>(pos, size, 2, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/brightness.png");
             button->addMenuItem(std::move(brightness));
 
-            pos = {100, 90};
+            pos = {204, 110};
             auto negative = std::make_unique<NegativeTool>(pos, size, 3, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/negative.png");
             button->addMenuItem(std::move(negative));
 

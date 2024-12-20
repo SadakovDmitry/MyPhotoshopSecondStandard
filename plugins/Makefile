@@ -22,3 +22,9 @@ lib%.dylib: src/%.cpp $(IMPLEMENTATION_DYLIB)
 clean:
 	rm -f dylibs/lib*.dylib
 	@echo "Удалены все скомпилированные плагины"
+
+libbrush.dylib: brush.cpp $(IMPLEMENTATION_DYLIB)
+	@mkdir -p dylibs
+	@$(CXX) $(CXXFLAGS) $< -o dylibs/$@ $(LDFLAGS)
+	@echo "Собран плагин $@"
+

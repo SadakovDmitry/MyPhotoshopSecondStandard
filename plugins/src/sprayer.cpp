@@ -1,6 +1,4 @@
 
-// #include "toolbar.hpp"
-// #include "canvas.hpp"
 #include "../headers/sprayer.hpp"
 #include <vector>
 #include <iostream>

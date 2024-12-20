@@ -72,8 +72,6 @@ private:
     bool scroll_button_pressed = false;
     bool is_active  = true;
     const IWindow* parent;
-    //Tool* active_tool;
-    //std::unique_ptr<ABarButton> activeTool;
     ABarButton* activeTool;
     std::vector<std::unique_ptr<sfm::Drawable>> objects;
 
@@ -89,14 +87,6 @@ public:
      * @param renderWindow The render target.
      */
     void draw(IRenderWindow* renderWindow) override;
-
-    /**
-     * @brief Updates the window based on events.
-     * @param renderWindow The render target.
-     * @param event The event to process.
-     * @return True if the window was updated, false otherwise.
-     */
-    // bool update(const IRenderWindow* renderWindow, const Event& event) override;
 
     /**
      * @brief Gets the unique ID of the window.
