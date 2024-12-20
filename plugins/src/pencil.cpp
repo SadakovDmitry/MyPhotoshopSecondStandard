@@ -8,6 +8,19 @@
 
 namespace psapi {
 
+    PencilTool::PencilTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file)
+        : ABarButton(pos_, size_, id_) {
+        if (!texture.loadFromFile(file)) {
+             std::cerr << "Error opening file\n";
+        }
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(255, 255, 255, 255));
+        sprite.setPosition(pos.x, pos.y);
+        color = {255, 0, 0, 255};
+    }
+
     std::unique_ptr<IAction> PencilTool::createAction(const IRenderWindow *renderWindow_, const Event &event_) {
         return std::make_unique<PencilAction>(this, renderWindow_, event_);
     }
@@ -131,7 +144,7 @@ namespace psapi {
             // ChildInfo info = toolbar->getNextChildInfo();
             vec2i pos = {toolbar->getPos().x + 50, toolbar->getPos().y};
             vec2u size = {50, 50};
-            auto tool = std::make_unique<PencilTool>(pos, size, 1);
+            auto tool = std::make_unique<PencilTool>(pos, size, 1, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Pencil.png");
 
             if (toolbar) {
                 toolbar->addWindow(std::move(tool));

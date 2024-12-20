@@ -9,6 +9,45 @@
 
 namespace psapi {
 
+    FileButton::FileButton(vec2i pos_, vec2u size_, wid_t id_, const std::string& file)
+        : AMenuButton(pos_, size_, id_) {
+        if (!texture.loadFromFile(file)) {
+             std::cerr << "Error opening file\n";
+        }
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(255, 255, 255, 255));
+        sprite.setPosition(pos.x, pos.y);
+        vec2i menu_pos = {pos.x + static_cast<int>(getSize().x), pos.y + static_cast<int>(getSize().y)};
+        vec2u menu_size = {size.x, 50};
+        menu = new AMenu(menu_pos, menu_size);
+    }
+
+    SaveTool::SaveTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file)
+        : ABarButton(pos_, size_, id_) {
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(255, 255, 255, 255));
+        sprite.setPosition(pos.x, pos.y);
+    }
+
+    LoadTool::LoadTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file)
+        : ABarButton(pos_, size_, id_) {
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(255, 255, 255, 255));
+        sprite.setPosition(pos.x, pos.y);
+    }
+
     std::unique_ptr<IAction> FileButton::createAction(const IRenderWindow *renderWindow_, const Event &event_) {
         return std::make_unique<FileButtonAction>(this, renderWindow_, event_);
     }
@@ -211,15 +250,15 @@ extern "C" {
             // ChildInfo info = menubar->getNextChildInfo();
             vec2i pos = {menubar->getPos().x + 200, menubar->getPos().y};
             vec2u size = {100, 50};
-            auto button = std::make_unique<FileButton>(pos, size, kMenuFileId);
+            auto button = std::make_unique<FileButton>(pos, size, kMenuFileId, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Files.png");
 
             pos = {200, 50};
             size = {100, 20};
-            auto gaus = std::make_unique<LoadTool>(pos, size, 1);
+            auto gaus = std::make_unique<LoadTool>(pos, size, 1, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/load.png");
             button->addMenuItem(std::move(gaus));
 
             pos = {200, 70};
-            auto save_tool = std::make_unique<SaveTool>(pos, size, 2);
+            auto save_tool = std::make_unique<SaveTool>(pos, size, 2, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/save.png");
             button->addMenuItem(std::move(save_tool));
 
 

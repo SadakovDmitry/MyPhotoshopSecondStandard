@@ -10,6 +10,28 @@
 
 namespace psapi {
 
+    ColorPalette::ColorPalette(vec2i pos_, vec2u size_, const std::string& file_palette, const std::string& file_cursor)
+        : pos(pos_), size(size_), id(kColorPaletteId), selectedColor({0, 0, 0, 255}) {
+        if (!paletteImage.loadFromFile(file_palette)) {
+            std::cerr << "Error loading palette image\n";
+        }
+        if (!texture.loadFromFile(file_palette)) {
+            std::cerr << "Error loading palette image\n";
+        }
+        //texture.loadFromImage(paletteImage);
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setPosition(pos.x, pos.y);
+
+        if (!cursor_texture.loadFromFile(file_cursor)) {
+            std::cerr << "Error loading file_cursor image\n";
+        }
+
+        cursor_sprite.setTexture(&cursor_texture);
+        cursor_sprite.setTextureRect(sfm::IntRect({0, 0}, {30, 30}));
+        cursor_sprite.setScale(0.5, 0.5);
+    }
+
     sfm::Color ColorPalette::getColor() const {
         return selectedColor;
     }
@@ -67,7 +89,6 @@ namespace psapi {
         color_palette->updateState(render_window, event);
         if (color_palette->cursor_is_dragging) {
             Canvas* canvas = static_cast<Canvas*>(getRootWindow()->getWindowById(kCanvasWindowId));
-            //ILayer* temp_layer = canvas->getTempLayer();
             vec2i mouse_pos = canvas->getMousePosition();
             vec2u rel_pos = {static_cast<unsigned int>(mouse_pos.x + canvas->layer_pos.x - color_palette->pos.x),
                              static_cast<unsigned int>(mouse_pos.y + canvas->layer_pos.y - color_palette->pos.y)};
@@ -75,7 +96,6 @@ namespace psapi {
             color_palette->cursor_sprite.setPosition(color_palette->last_mouse_pos.x - 8,
                                                      color_palette->last_mouse_pos.y - 8);
             color_palette->cursor_sprite.setColor(color_palette->selectedColor);
-            // std::cout << "color: " << static_cast<int>(color_palette->selectedColor.r) << " " << static_cast<int>(color_palette->selectedColor.g) << " " <<  static_cast<int>(color_palette->selectedColor.b) << "\n";
         }
         return true;
     }
@@ -144,7 +164,9 @@ namespace psapi {
             assert(optionsbar);
             vec2i pos = {optionsbar->getPos().x, optionsbar->getPos().y};
             vec2u size = {100, 100};
-            auto palette = std::make_unique<ColorPalette>(pos, size);
+            auto palette = std::make_unique<ColorPalette>(pos, size,
+                        "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/palette.jpg",
+                        "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/color_cursor.png");
             assert(palette);
             optionsbar->addWindow(std::move(palette));
 //             ChildInfo info_thicknessWindow;

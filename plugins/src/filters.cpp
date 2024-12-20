@@ -5,6 +5,58 @@
 
 namespace psapi {
 
+    FiltersButton::FiltersButton(vec2i pos_, vec2u size_, wid_t id_, const std::string& file)
+        : AMenuButton(pos_, size_, id_) {
+        if (!texture.loadFromFile(file)) {
+             std::cerr << "Error opening file\n";
+        }
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(255, 255, 255, 255));
+        sprite.setPosition(pos.x, pos.y);
+        vec2i menu_pos = {pos.x + static_cast<int>(getSize().x), pos.y + static_cast<int>(getSize().y)};
+        vec2u menu_size = {size.x, 50};
+        menu = new AMenu(menu_pos, menu_size);
+    }
+
+    BlurTool::BlurTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file)
+        : ABarButton(pos_, size_, id_) {
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(255, 255, 255, 255));
+        sprite.setPosition(pos.x, pos.y);
+    }
+
+    BrightnessTool::BrightnessTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file)
+        : ABarButton(pos_, size_, id_) {
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(255, 255, 255, 255));
+        sprite.setPosition(pos.x, pos.y);
+    }
+
+    NegativeTool::NegativeTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file)
+        : ABarButton(pos_, size_, id_) {
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(255, 255, 255, 255));
+        sprite.setPosition(pos.x, pos.y);
+    }
+
+
     std::unique_ptr<IAction> FiltersButton::createAction(const IRenderWindow *renderWindow_, const Event &event_) {
         return std::make_unique<FiltersButtonAction>(this, renderWindow_, event_);
     }
@@ -345,19 +397,19 @@ extern "C" {
             // ChildInfo info = menubar->getNextChildInfo();
             vec2i pos = {menubar->getPos().x + 100, menubar->getPos().y};
             vec2u size = {100, 50};
-            auto button = std::make_unique<FiltersButton>(pos, size, kMenuFilterId);
+            auto button = std::make_unique<FiltersButton>(pos, size, kMenuFilterId, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Filters.png");
 
             pos = {100, 50};
             size = {100, 20};
-            auto gaus = std::make_unique<BlurTool>(pos, size, 1);
+            auto gaus = std::make_unique<BlurTool>(pos, size, 1, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/blur.png");
             button->addMenuItem(std::move(gaus));
 
             pos = {100, 70};
-            auto brightness = std::make_unique<BrightnessTool>(pos, size, 2);
+            auto brightness = std::make_unique<BrightnessTool>(pos, size, 2, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/brightness.png");
             button->addMenuItem(std::move(brightness));
 
             pos = {100, 90};
-            auto negative = std::make_unique<NegativeTool>(pos, size, 3);
+            auto negative = std::make_unique<NegativeTool>(pos, size, 3, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/negative.png");
             button->addMenuItem(std::move(negative));
 
             if (menubar) {

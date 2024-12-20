@@ -3,12 +3,12 @@
 
 //#include "api_photoshop.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_bar.hpp"
-#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/my_sfm.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/headers/my_sfm.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_sfm.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_canvas.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_photoshop.hpp"
-#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/photoshop.hpp"
-#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/canvas.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/headers/photoshop.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/headers/canvas.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_actions.hpp"
 
 #include <cstdint>
@@ -29,20 +29,7 @@ private:
 
     void updateState(const IRenderWindow *render_window, const Event &event);
 public:
-    FiltersButton(vec2i pos_, vec2u size_, wid_t id_)
-        : AMenuButton(pos_, size_, id_) {
-        if (!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Filters.png")) {
-             std::cerr << "Error opening file\n";
-        }
-        sprite.setTexture(&texture);
-        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
-        sprite.setColor(sfm::Color(255, 255, 255, 255));
-        sprite.setPosition(pos.x, pos.y);
-        vec2i menu_pos = {pos.x + static_cast<int>(getSize().x), pos.y + static_cast<int>(getSize().y)};
-        vec2u menu_size = {size.x, 50};
-        menu = new AMenu(menu_pos, menu_size);
-    }
+    FiltersButton(vec2i pos_, vec2u size_, wid_t id_, const std::string& file);
 
     std::unique_ptr<IAction> createAction(const IRenderWindow* renderWindow, const Event& event) override;
 
@@ -64,19 +51,7 @@ private:
 
     void updateState(const IRenderWindow *render_window, const Event &event);
 public:
-    BlurTool(vec2i pos_, vec2u size_, wid_t id_)
-        : ABarButton(pos_, size_, id_) {
-        if (!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/blur.png")) {
-            std::cerr << "Error opening file\n";
-        }
-        sprite.setTexture(&texture);
-        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
-        sprite.setColor(sfm::Color(255, 255, 255, 255));
-        sprite.setPosition(pos.x, pos.y);
-    }
-
-    // void draw(IRenderWindow* renderWindow) override;
+    BlurTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file);
 
     std::unique_ptr<IAction> createAction(const IRenderWindow* renderWindow, const Event& event) override;
 
@@ -101,17 +76,7 @@ private:
 
     void updateState(const IRenderWindow *render_window, const Event &event);
 public:
-    BrightnessTool(vec2i pos_, vec2u size_, wid_t id_)
-        : ABarButton(pos_, size_, id_) {
-        if (!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/brightness.png")) {
-            std::cerr << "Error opening file\n";
-        }
-        sprite.setTexture(&texture);
-        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
-        sprite.setColor(sfm::Color(255, 255, 255, 255));
-        sprite.setPosition(pos.x, pos.y);
-    }
+    BrightnessTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file);
 
     std::unique_ptr<IAction> createAction(const IRenderWindow* renderWindow, const Event& event) override;
 
@@ -136,17 +101,7 @@ private:
 
     void updateState(const IRenderWindow *render_window, const Event &event);
 public:
-    NegativeTool(vec2i pos_, vec2u size_, wid_t id_)
-        : ABarButton(pos_, size_, id_) {
-        if (!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/negative.png")) {
-            std::cerr << "Error opening file\n";
-        }
-        sprite.setTexture(&texture);
-        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
-        sprite.setColor(sfm::Color(255, 255, 255, 255));
-        sprite.setPosition(pos.x, pos.y);
-    }
+    NegativeTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file);
 
     std::unique_ptr<IAction> createAction(const IRenderWindow* renderWindow, const Event& event) override;
 

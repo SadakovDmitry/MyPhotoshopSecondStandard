@@ -3,12 +3,12 @@
 
 //#include "api_photoshop.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_bar.hpp"
-#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/my_sfm.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/headers/my_sfm.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_sfm.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_canvas.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_photoshop.hpp"
-#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/photoshop.hpp"
-#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/canvas.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/headers/photoshop.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/headers/canvas.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_actions.hpp"
 
 
@@ -35,16 +35,7 @@ private:
     std::vector<std::unique_ptr<ABarButton>> scrollbar;
     Scrollable* scroll_obj;
 public:
-    ScrollBarVert(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_) : id(id_), is_active(true), pos(pos_), size(size_), scale(vec2f(1, 1)), parent(nullptr), scrollbar(), scroll_obj(scroll_obj_) {
-        //texture.create(static_cast<unsigned int>(size.x), static_cast<unsigned int>(size.y));
-        std::vector<sfm::Color> pix_arr(size.x * size.y, sfm::Color(170, 170, 170, 255));
-        texture.loadFromMemory(pix_arr.data(), size.x * size.y, sfm::IntRect(pos, size));
-        sprite.setTexture(&texture);
-        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
-        sprite.setColor(sfm::Color(170, 170, 170, 255));
-        sprite.setPosition(pos.x, pos.y);
-        }
+    ScrollBarVert(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_);
 
     ~ScrollBarVert() = default;
 
@@ -102,19 +93,8 @@ private:
 
     void updateState(const IRenderWindow *render_window, const Event &event);
 public:
-    ScrollBarSlider(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_)
-        : ABarButton(pos_, size_, id_), is_dragging(false), scroll_obj(scroll_obj_) {
-        //texture.create(static_cast<unsigned int>(size.x), static_cast<unsigned int>(size.y));
-        std::vector<sfm::Color> pix_arr(size.x * size.y, sfm::Color(100, 100, 100, 255));
-        texture.loadFromMemory(pix_arr.data(), size.x * size.y, sfm::IntRect(pos, size));
-        sprite.setTexture(&texture);
-        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
-        sprite.setColor(sfm::Color(100, 100, 100, 255));
-        sprite.setPosition(pos.x, pos.y);
-    }
+    ScrollBarSlider(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_);
 
-    // virtual void action() override ;
     std::unique_ptr<IAction> createAction(const IRenderWindow* renderWindow, const Event& event) override;
 
     virtual ~ScrollBarSlider() = default;
@@ -126,19 +106,8 @@ class ScrollBarArrUp : public ABarButton {
 
     void updateState(const IRenderWindow *render_window, const Event &event);
 public:
-    ScrollBarArrUp(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_, const std::string& file)
-        : ABarButton(pos_, size_, id_), scroll_obj(scroll_obj_) {
-        if (!texture.loadFromFile(("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/" + file).c_str())) {
-             std::cerr << "Error opening file\n";
-        }
-        sprite.setTexture(&texture);
-        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
-        sprite.setColor(sfm::Color(100, 100, 100, 255));
-        sprite.setPosition(pos.x, pos.y);
-    }
+    ScrollBarArrUp(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_, const std::string& file);
 
-    // virtual void action() override ;
     std::unique_ptr<IAction> createAction(const IRenderWindow* renderWindow, const Event& event) override;
 
 
@@ -151,19 +120,8 @@ private:
     friend class ScrollBarArrDownAction;
     void updateState(const IRenderWindow *render_window, const Event &event);
 public:
-    ScrollBarArrDown(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_, const std::string& file)
-        : ABarButton(pos_, size_, id_), scroll_obj(scroll_obj_) {
-        if (!texture.loadFromFile(("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/" + file).c_str())) {
-             std::cerr << "Error opening file\n";
-        }
-        sprite.setTexture(&texture);
-        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
-        sprite.setColor(sfm::Color(100, 100, 100, 255));
-        sprite.setPosition(pos.x, pos.y);
-    }
+    ScrollBarArrDown(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_, const std::string& file);
 
-    // virtual void action() override ;
     std::unique_ptr<IAction> createAction(const IRenderWindow* renderWindow, const Event& event) override;
 
     ~ScrollBarArrDown() = default;

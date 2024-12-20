@@ -18,7 +18,6 @@ public:
     RootWindow();
 
     virtual void draw  (      psapi::IRenderWindow* renderWindow);
-    // virtual bool update(const psapi::IRenderWindow* renderWindow,  const psapi::sfm::Event& event);
     virtual std::unique_ptr<IAction> createAction(const IRenderWindow* renderWindow, const Event& event);
     virtual int64_t getId() const;
 
@@ -62,11 +61,9 @@ private:
     vec2f scale;
     const IWindow* parent;
 public:
-    virtual ~AWindow() = default;                                                       // out of standart
+    virtual ~AWindow() = default;
 
     virtual void draw(IRenderWindow* renderWindow) = 0;
-
-    // virtual bool update(const IRenderWindow* renderWindow, const Event& event) = 0;
 
     virtual std::unique_ptr<IAction> createAction(const IRenderWindow* renderWindow, const Event& event);
 

@@ -10,6 +10,25 @@
 
 namespace psapi {
 
+    OpacityOption::OpacityOption(vec2i pos_, vec2u size_, const std::string& bar_file, const std::string& cursor_file)
+        : pos(pos_), size(size_), id(kOpacityBarId), opacity(255) {
+        if (!texture.loadFromFile(bar_file)) {
+            std::cerr << "Error loading opacity image\n";
+        }
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setPosition(pos.x, pos.y);
+
+        if (!cursor_texture.loadFromFile(cursor_file)) {
+            std::cerr << "Error loading cursor image\n";
+        }
+
+        cursor_sprite.setTexture(&cursor_texture);
+        cursor_sprite.setTextureRect(sfm::IntRect({0, 0}, {10, 14}));
+        cursor_sprite.setPosition({static_cast<float>(pos.x + size.x - 10), pos.y + static_cast<float>(size.y / 2 - 8)});
+        cursor_sprite.setScale(1, 1);
+    }
+
     float OpacityOption::getOpacity() const {
         return opacity;
     }
@@ -138,7 +157,9 @@ namespace psapi {
             assert(optionsbar);
             vec2i pos = {optionsbar->getPos().x, optionsbar->getPos().y + 160};
             vec2u size = {100, 60};
-            auto opacity = std::make_unique<OpacityOption>(pos, size);
+            auto opacity = std::make_unique<OpacityOption>(pos, size,
+                                            "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/opacity_bar.png",
+                                            "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/thickness_cursor.png");
             assert(opacity);
             optionsbar->addWindow(std::move(opacity));
             return true;

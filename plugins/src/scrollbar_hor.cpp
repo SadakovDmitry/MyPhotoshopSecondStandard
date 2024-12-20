@@ -31,28 +31,23 @@ namespace psapi {
 //                                                                          ScrollBar
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    ScrollBarHor::ScrollBarHor(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_) : id(id_), is_active(true), pos(pos_), size(size_), scale(vec2f(1, 1)), parent(nullptr), scrollbar(), scroll_obj(scroll_obj_) {
+        //texture.create(static_cast<unsigned int>(size.x), static_cast<unsigned int>(size.y));
+        std::vector<sfm::Color> pix_arr(size.x * size.y, sfm::Color(170, 170, 170, 255));
+        texture.loadFromMemory(pix_arr.data(), size.x * size.y, sfm::IntRect(pos, size));
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(170, 170, 170, 255));
+        sprite.setPosition(pos.x, pos.y);
+    }
+
     void ScrollBarHor::draw(IRenderWindow* renderWindow) {
         renderWindow->draw(&sprite);
         for (const auto& button : scrollbar) {
             button->draw(renderWindow);
         }
-
-        //std::cout << "draw ScrollBar\n";
     }
-
-    // bool ScrollBarHor::update(const IRenderWindow* renderWindow, const Event& event) {
-    //     for (auto& button : scrollbar) {
-    //         if (button->update(renderWindow, event)) {
-    //             //if (button->getState() == ABarButton::State::Press) {
-    //                 button->action();
-    //             //     ICanvas* canvas = static_cast<ICanvas*>(getRootWindow()->getWindowById(psapi::kCanvasWindowId));
-    //             //     canvas->setActiveTool(nullptr);
-    //             //}
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
 
     wid_t ScrollBarHor::getId() const { return id; }
 
@@ -156,58 +151,19 @@ namespace psapi {
 //                                                                      ScrollBarTools
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//     void ScrollBarSlider::action() {
-//         Canvas* canvas = static_cast<Canvas*>(getRootWindow()->getWindowById(kCanvasWindowId));
-//         ILayer* temp_layer = canvas->getTempLayer();
-//         vec2i mouse_pos    = canvas->getMousePosition();
-//         vec2i canvas_pos   = canvas->getPos();
-//         vec2u canvas_size  = canvas->getSize();
-//
-//         vec2i cur_pos;
-//
-//         if (this->state == ABarButton::State::Released) {
-//             is_dragging = false;
-//         }
-//         if (this->state == ABarButton::State::Press) {
-//             is_dragging = true;
-//             drag_offset.x = mouse_pos.x + canvas->layer_pos.x - pos.x;
-//             scroll_obj->setShift({canvas_pos.x - canvas->layer_pos.x, canvas_pos.y - canvas->layer_pos.y});
-//         }
-//         else if (is_dragging) {
-//
-//             int old_slider_pos_x = pos.x;
-//             int new_slider_pos_x = mouse_pos.x + canvas->layer_pos.x - drag_offset.x;
-//
-//             new_slider_pos_x = std::min(static_cast<int>(canvas_pos.x + canvas_size.x - size.x),
-//                     std::max(new_slider_pos_x, canvas_pos.x));
-//             int slider_shift_x = (new_slider_pos_x - old_slider_pos_x);
-//             int layer_shift_x = slider_shift_x * (canvas->layer_size.x / canvas_size.x);
-//             pos.x = new_slider_pos_x;
-//             sprite.setPosition(pos.x, pos.y);
-//             scroll_obj->scroll({layer_shift_x, 0});
-//         }
-//     }
+    ScrollBarSlider::ScrollBarSlider(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_)
+        : ABarButton(pos_, size_, id_), is_dragging(false), scroll_obj(scroll_obj_) {
+        //texture.create(static_cast<unsigned int>(size.x), static_cast<unsigned int>(size.y));
+        std::vector<sfm::Color> pix_arr(size.x * size.y, sfm::Color(100, 100, 100, 255));
+        texture.loadFromMemory(pix_arr.data(), size.x * size.y, sfm::IntRect(pos, size));
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(100, 100, 100, 255));
+        sprite.setPosition(pos.x, pos.y);
+    }
 
-//     void ScrollBarArrRight::action() {
-//         ScrollBarHor* scrollbar = static_cast<ScrollBarHor*>(getRootWindow()->getWindowById(kScrollBarHorWindowId));
-//         ScrollBarSlider* slider = static_cast<ScrollBarSlider*>(scrollbar->getWindowById(1));
-//         if (this->state == ABarButton::State::Press) {
-//             slider->pos.x += 5;
-//             scroll_obj->scroll({5, 0});
-//             slider->sprite.setPosition(slider->pos.x, slider->pos.y);
-//         }
-//     }
-//
-//     void ScrollBarArrLeft::action() {
-//         ScrollBarHor* scrollbar = static_cast<ScrollBarHor*>(getRootWindow()->getWindowById(kScrollBarHorWindowId));
-//         ScrollBarSlider* slider = static_cast<ScrollBarSlider*>(scrollbar->getWindowById(1));
-//         if (this->state == ABarButton::State::Press) {
-//             slider->pos.x -= 5;
-//             scroll_obj->scroll({-5, 0});
-//             slider->sprite.setPosition(slider->pos.x, slider->pos.y);
-//         }
-//     }
-    std::unique_ptr<IAction> ScrollBarSlider::createAction(const IRenderWindow *renderWindow_, const Event &event_) {
+  std::unique_ptr<IAction> ScrollBarSlider::createAction(const IRenderWindow *renderWindow_, const Event &event_) {
         return std::make_unique<ScrollBarSliderAction>(this, renderWindow_, event_);
     }
 
@@ -237,6 +193,18 @@ namespace psapi {
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    ScrollBarArrRight::ScrollBarArrRight(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_, const std::string& file)
+        : ABarButton(pos_, size_, id_), scroll_obj(scroll_obj_) {
+        if (!texture.loadFromFile(("/Users/dima/MIPT/SecondSem/MyPaint2.0/images/" + file).c_str())) {
+             std::cerr << "Error opening file\n";
+        }
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(100, 100, 100, 255));
+        sprite.setPosition(pos.x, pos.y);
+    }
+
     std::unique_ptr<IAction> ScrollBarArrRight::createAction(const IRenderWindow *renderWindow_, const Event &event_) {
         return std::make_unique<ScrollBarArrRightAction>(this, renderWindow_, event_);
     }
@@ -246,6 +214,18 @@ namespace psapi {
     }
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    ScrollBarArrLeft::ScrollBarArrLeft(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_, const std::string& file)
+        : ABarButton(pos_, size_, id_), scroll_obj(scroll_obj_) {
+        if (!texture.loadFromFile(("/Users/dima/MIPT/SecondSem/MyPaint2.0/images/" + file).c_str())) {
+             std::cerr << "Error opening file\n";
+        }
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(100, 100, 100, 255));
+        sprite.setPosition(pos.x, pos.y);
+    }
 
     std::unique_ptr<IAction> ScrollBarArrLeft::createAction(const IRenderWindow *renderWindow_, const Event &event_) {
         return std::make_unique<ScrollBarArrLeftAction>(this, renderWindow_, event_);

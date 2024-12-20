@@ -3,12 +3,12 @@
 
 //#include "api_photoshop.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_bar.hpp"
-#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/my_sfm.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/headers/my_sfm.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_sfm.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_canvas.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_photoshop.hpp"
-#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/photoshop.hpp"
-#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/canvas.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/headers/photoshop.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/headers/canvas.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_actions.hpp"
 
 #include <cstdint>
@@ -30,18 +30,7 @@ private:
 
     void updateState(const IRenderWindow *render_window, const Event &event);
 public:
-    EraserTool(vec2i pos_, vec2u size_, wid_t id_)
-        : ABarButton(pos_, size_, id_) {
-        if (!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Eraser.png")) {
-             std::cerr << "Error opening file\n";
-        }
-        sprite.setTexture(&texture);
-        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setScale(1, 1);
-        sprite.setColor(sfm::Color(255, 255, 255, 255));
-        sprite.setPosition(pos.x, pos.y);
-        color = {255, 255, 255, 0};
-    }
+    EraserTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file);
 
     std::unique_ptr<IAction> createAction(const IRenderWindow* renderWindow, const Event& event) override;
     sfm::Color getColor();

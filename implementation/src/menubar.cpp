@@ -10,8 +10,6 @@ namespace psapi {
 //                                                                          MenuBar
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// MenuBar::MenuBar(vec2i pos_, vec2i size_) : pos(pos_), size(size_) {}
-
 void MenuBar::draw(IRenderWindow* renderWindow) {
 
     //renderWindow->draw(&sprite);

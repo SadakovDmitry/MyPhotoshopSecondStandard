@@ -26,9 +26,7 @@ private:
     std::vector<std::unique_ptr<IMenuButton>> menubar;
 public:
     MenuBar(vec2i pos_, vec2u size_) : id(kMenuBarWindowId), is_active(true), pos(pos_), size(size_), scale(vec2f(1, 1)), parent(nullptr), menubar() {
-        // if(!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Pencil.png")) {
-        //     //throw std::runtime_error("ошибка открытия файла > " + file + "!");
-        // }
+        // texture.create(size.x, size.y);
         sprite.setTexture(&texture);
         sfm::IntRect rect;
         rect.pos = {0, 0};
@@ -40,42 +38,24 @@ public:
     }
     ~MenuBar() = default;
 
-    virtual void draw(IRenderWindow* renderWindow);
-
-    // virtual bool update(const IRenderWindow* renderWindow, const Event& event);
-
-    virtual wid_t getId() const;
-
-    virtual IWindow* getWindowById(wid_t id);
-
-    virtual const IWindow* getWindowById(wid_t id) const;
-
-    virtual vec2i getPos() const;
-
-    virtual vec2u getSize() const;
-
-    virtual void setParent(const IWindow* parent);
-
-    virtual void forceActivate();
-
-    virtual void forceDeactivate();
-
-    virtual bool isActive() const;
-
-    virtual void addWindow(std::unique_ptr<IWindow> window);
-
-    virtual void removeWindow(wid_t id);
-
-    virtual bool isWindowContainer() const;
-
-    virtual void finishButtonDraw(IRenderWindow* renderWindow, const IBarButton* button) const;
-
-    virtual bool unPressAllButtons();
-
-    virtual std::unique_ptr<IAction> createAction(const IRenderWindow* renderWindow, const Event& event);
-
-    virtual void setSize(const vec2u& size);
-    virtual void setPos(const vec2i& pos);
+    virtual void draw(IRenderWindow* renderWindow) override;
+    virtual wid_t getId() const override;
+    virtual IWindow* getWindowById(wid_t id) override;
+    virtual const IWindow* getWindowById(wid_t id) const override;
+    virtual vec2i getPos() const override;
+    virtual vec2u getSize() const override;
+    virtual void setParent(const IWindow* parent) override;
+    virtual void forceActivate() override;
+    virtual void forceDeactivate() override;
+    virtual bool isActive() const override;
+    virtual void addWindow(std::unique_ptr<IWindow> window) override;
+    virtual void removeWindow(wid_t id) override;
+    virtual bool isWindowContainer() const override;
+    virtual void finishButtonDraw(IRenderWindow* renderWindow, const IBarButton* button) const override;
+    virtual bool unPressAllButtons() override;
+    virtual std::unique_ptr<IAction> createAction(const IRenderWindow* renderWindow, const Event& event) override;
+    virtual void setSize(const vec2u& size) override;
+    virtual void setPos(const vec2i& pos) override;
 };
 
 class MenuBarAction : public AAction {

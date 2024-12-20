@@ -8,24 +8,18 @@
 
 namespace psapi {
 
-//     void SprayerTool::action() {
-//         srand(time(0));
-//         ICanvas* canvas = static_cast<ICanvas*>(getRootWindow()->getWindowById(kCanvasWindowId));
-//         ILayer* temp_layer = canvas->getTempLayer();
-//         vec2i mouse_pos    = canvas->getMousePosition();
-//         vec2i canvas_pos   = canvas->getPos();
-//         // mouse_pos.x -= canvas_pos.x;
-//         // mouse_pos.y -= canvas_pos.y;
-//         vec2i cur_pos;
-//
-//         if (canvas->isPressedLeftMouseButton()) {
-//             for (int i = 0; i < 30; i++) {
-//                 cur_pos.x = mouse_pos.x + (rand() % 20);
-//                 cur_pos.y = mouse_pos.y + (rand() % 20);
-//                 temp_layer->setPixel(cur_pos, {0, 0, 0, 255});
-//             }
-//         }
-//     }
+    SprayerTool::SprayerTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file)
+        : ABarButton(pos_, size_, id_) {
+        if (!texture.loadFromFile(file)) {
+             std::cerr << "Error opening file\n";
+        }
+        sprite.setTexture(&texture);
+        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        sprite.setScale(1, 1);
+        sprite.setColor(sfm::Color(255, 255, 255, 255));
+        sprite.setPosition(pos.x, pos.y);
+        color = {0, 255, 0, 255};
+    }
 
     std::unique_ptr<IAction> SprayerTool::createAction(const IRenderWindow *renderWindow, const Event &event) {
         return std::make_unique<SprayerAction>(this, renderWindow, event);
@@ -43,37 +37,18 @@ namespace psapi {
         return true;
     }
 
-
     bool SprayerAction::redo(const Key &key) {
         std::cout << "Redo spray";
         return true;
     }
 
-
     bool SprayerAction::isUndoable(const Key &key) {
         return true;
     }
 
-    // void SprayerAction::updateState(const IRenderWindow *render_window, const Event &event)
-    // {
-    //     getActionController()->execute(ABarButton::createAction(render_window, event));
-    // }
-
-
     bool SprayerAction::execute(const Key &key)
     {
         spray->updateState(render_window, event);
-        // getActionController()->execute(ABarButton::createAction(render_window, event));
-
-        // if (spray->getState() != IBarButton::State::Press) {
-        //     spray->options_added_ = false;
-        //     return true;
-        // }
-        // if (!spray->options_added_) {
-        //     spray->createOptions();
-        //     spray->addOptions();
-        // }
-        // spray->color_ = spray->palette_->getColor();
         srand(time(0));
         ICanvas* canvas = static_cast<ICanvas*>(getRootWindow()->getWindowById(kCanvasWindowId));
         ILayer* temp_layer = canvas->getTempLayer();
@@ -90,14 +65,12 @@ namespace psapi {
                 spray->color.b = static_cast<int>(color_palette->getColor().b);
                 spray->color.a = static_cast<int>(capacity_bar->getOpacity());
             }
-            // std::cout << "spray color: " << spray->color.r << " " << spray->color.g << " " <<  static_cast<int>(spray->color.b) << "\n";
-            // std::cout << "\033[33mexecute spray\033[0m" << std::endl;
+
             for (int i = 0; i < 30; i++) {
                 cur_pos.x = mouse_pos.x + (rand() % 20);
                 cur_pos.y = mouse_pos.y + (rand() % 20);
                 temp_layer->setPixel(cur_pos, spray->color);
             }
-            // std::cout << "\033[32mexecute spray: \033[0m" << mouse_pos.x << ", " << mouse_pos.y << std::endl;
         }
         return true;
     }
@@ -109,7 +82,7 @@ namespace psapi {
             // ChildInfo info = toolbar->getNextChildInfo();
             vec2i pos = {toolbar->getPos().x, toolbar->getPos().y};
             vec2u size = {50, 50};
-            auto tool = std::make_unique<SprayerTool>(pos, size, 3);
+            auto tool = std::make_unique<SprayerTool>(pos, size, 3, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Sprayer.jpg");
 
             if (toolbar) {
                 toolbar->addWindow(std::move(tool));

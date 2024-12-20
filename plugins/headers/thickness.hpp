@@ -2,13 +2,13 @@
 #define THICKNESS_HPP
 
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_bar.hpp"
-#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/my_sfm.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/headers/my_sfm.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_sfm.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_canvas.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_photoshop.hpp"
 #include "/Users/dima/MIPT/SecondSem/MyPaint2.0/Standard/api_actions.hpp"
-#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/photoshop.hpp"
-#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/canvas.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/headers/photoshop.hpp"
+#include "/Users/dima/MIPT/SecondSem/MyPaint2.0/implementation/headers/canvas.hpp"
 
 #include <cstdint>
 #include <memory>
@@ -40,24 +40,7 @@ private:
 
     void updateState(const IRenderWindow *render_window_, const Event &event_);
 public:
-    ThicknessOption(vec2i pos_, vec2u size_)
-        : pos(pos_), size(size_), id(kThicknessBarId), thickness(3) {
-        if (!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/thickness_bar.png")) {
-            std::cerr << "Error loading palette image\n";
-        }
-        sprite.setTexture(&texture);
-        sprite.setTextureRect(sfm::IntRect({0, 0}, size));
-        sprite.setPosition(pos.x, pos.y);
-
-        if (!cursor_texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/thickness_cursor.png")) {
-            std::cerr << "Error loading palette image\n";
-        }
-
-        cursor_sprite.setTexture(&cursor_texture);
-        cursor_sprite.setTextureRect(sfm::IntRect({0, 0}, {10, 14}));
-        cursor_sprite.setPosition({static_cast<float>(pos.x), pos.y + static_cast<float>(size.y / 2 - 8)});
-        cursor_sprite.setScale(1, 1);
-    }
+    ThicknessOption(vec2i pos_, vec2u size_, const std::string& bar_file, const std::string& cursor_file);
 
     std::unique_ptr<IAction> createAction(const IRenderWindow *renderWindow_, const Event &event_) override;
 
