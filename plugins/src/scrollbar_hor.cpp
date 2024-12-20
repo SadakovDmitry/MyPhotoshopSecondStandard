@@ -154,8 +154,26 @@ namespace psapi {
     ScrollBarSlider::ScrollBarSlider(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_)
         : ABarButton(pos_, size_, id_), is_dragging(false), scroll_obj(scroll_obj_) {
         //texture.create(static_cast<unsigned int>(size.x), static_cast<unsigned int>(size.y));
-        std::vector<sfm::Color> pix_arr(size.x * size.y, sfm::Color(100, 100, 100, 255));
+        std::vector<sfm::Color> pix_arr(size.x * size.y, sfm::Color(255, 255, 255, 255));
         texture.loadFromMemory(pix_arr.data(), size.x * size.y, sfm::IntRect(pos, size));
+        hovered_sprite.setTexture(&texture);
+        hovered_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        hovered_sprite.setScale(1, 1);
+        hovered_sprite.setColor(sfm::Color(100, 100, 100, 255));
+        hovered_sprite.setPosition(pos.x, pos.y);
+
+        pressed_sprite.setTexture(&texture);
+        pressed_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        pressed_sprite.setScale(1, 1);
+        pressed_sprite.setColor(sfm::Color(70, 70, 70, 255));
+        pressed_sprite.setPosition(pos.x, pos.y);
+
+        released_sprite.setTexture(&texture);
+        released_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        released_sprite.setScale(1, 1);
+        released_sprite.setColor(sfm::Color(100, 100, 100, 255));
+        released_sprite.setPosition(pos.x, pos.y);
+
         sprite.setTexture(&texture);
         sprite.setTextureRect(sfm::IntRect({0, 0}, size));
         sprite.setScale(1, 1);
@@ -251,7 +269,11 @@ namespace psapi {
         vec2u canvas_size  = canvas->getSize();
 
         vec2i cur_pos;
+        slider->hovered_sprite.setPosition(slider->pos.x, slider->pos.y);
+        slider->pressed_sprite.setPosition(slider->pos.x, slider->pos.y);
+        slider->released_sprite.setPosition(slider->pos.x, slider->pos.y);
         slider->sprite.setPosition(slider->pos.x, slider->pos.y);
+
         if (slider->state == ABarButton::State::Released) {
             slider->is_dragging = false;
         }

@@ -8,25 +8,6 @@
 
 namespace psapi {
 
-//     void EraserTool::action() {
-//         srand(time(0));
-//         ICanvas* canvas = static_cast<ICanvas*>(getRootWindow()->getWindowById(kCanvasWindowId));
-//         ILayer* temp_layer = canvas->getTempLayer();
-//         vec2i mouse_pos    = canvas->getMousePosition();
-//         vec2i canvas_pos   = canvas->getPos();
-//         // mouse_pos.x -= canvas_pos.x;
-//         // mouse_pos.y -= canvas_pos.y;
-//         vec2i cur_pos;
-//
-//         if (canvas->isPressedLeftMouseButton()) {
-//             for (int i = 0; i < 30; i++) {
-//                 cur_pos.x = mouse_pos.x + (rand() % 20);
-//                 cur_pos.y = mouse_pos.y + (rand() % 20);
-//                 temp_layer->setPixel(cur_pos, {0, 0, 0, 255});
-//             }
-//         }
-//     }
-
     EraserTool::EraserTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file)
         : ABarButton(pos_, size_, id_) {
         if (!texture.loadFromFile(file)) {
@@ -37,6 +18,34 @@ namespace psapi {
         sprite.setScale(1, 1);
         sprite.setColor(sfm::Color(255, 255, 255, 255));
         sprite.setPosition(pos.x, pos.y);
+
+        if (!hovered_texture.loadFromFile(file)) {
+            std::cerr << "Error opening file: " << file << "\n";
+        }
+        hovered_sprite.setTexture(&hovered_texture);
+        hovered_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        hovered_sprite.setScale(1, 1);
+        hovered_sprite.setColor(sfm::Color(200, 200, 200, 200));
+        hovered_sprite.setPosition(pos.x, pos.y);
+
+        if (!pressed_texture.loadFromFile(file)) {
+            std::cerr << "Error opening file: " << file << "\n";
+        }
+        pressed_sprite.setTexture(&pressed_texture);
+        pressed_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        pressed_sprite.setScale(1, 1);
+        pressed_sprite.setColor(sfm::Color(155, 155, 155, 255));
+        pressed_sprite.setPosition(pos.x, pos.y);
+
+        if (!released_texture.loadFromFile(file)) {
+            std::cerr << "Error opening file: " << file << "\n";
+        }
+        released_sprite.setTexture(&released_texture);
+        released_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        released_sprite.setScale(1, 1);
+        released_sprite.setColor(sfm::Color(255, 255, 255, 255));
+        released_sprite.setPosition(pos.x, pos.y);
+
         color = {255, 255, 255, 0};
     }
 
@@ -45,7 +54,26 @@ namespace psapi {
     }
 
     void EraserTool::updateState(const IRenderWindow *render_window_, const Event &event_) {
-        getActionController()->execute(ABarButton::createAction(render_window_, event_));
+        vec2i mouse_pos = sfm::Mouse::getPosition(render_window_);
+        vec2i pos = getPos();
+        vec2u size = getSize();
+
+        if (pos.x <= mouse_pos.x && mouse_pos.x <= pos.x + size.x &&
+            pos.y <= mouse_pos.y && mouse_pos.y <= pos.y + size.y)
+        {
+            if (event_.type == Event::MouseButtonPressed) {
+                if (state != IBarButton::State::Press) {
+                    state = IBarButton::State::Press;
+                    //static_cast<IBar*>(getRootWindow()->getWindowById(kToolBarWindowId))->unPressAllButtons();
+                } else {
+                    state = IBarButton::State::Released;
+                }
+            } else if (state != IBarButton::State::Press) {
+                state = psapi::IBarButton::State::Hover;
+            }
+        } else if (state == psapi::IBarButton::State::Hover || state == psapi::IBarButton::State::Released) {
+            state = psapi::IBarButton::State::Normal;
+        }
     }
 
     sfm::Color EraserTool::getColor() {
@@ -110,18 +138,17 @@ namespace psapi {
     bool EraserAction::execute(const Key &key)
     {
         eraser->updateState(render_window, event);
-        ICanvas* canvas = static_cast<ICanvas*>(getRootWindow()->getWindowById(kCanvasWindowId));
-        ILayer* temp_layer = canvas->getTempLayer();
-        vec2i mouse_pos    = canvas->getMousePosition();
-        vec2i canvas_pos   = canvas->getPos();
-        vec2i cur_pos;
-
-        IThicknessOption* thickness_bar = static_cast<IThicknessOption*>(getRootWindow()->getWindowById(kOptionsBarWindowId)->getWindowById(kThicknessBarId));
-        if(thickness_bar) {
-            eraser->thickness = thickness_bar->getThickness();
-        }
 
         if (eraser->getState() == IBarButton::State::Press) {
+            ICanvas* canvas = static_cast<ICanvas*>(getRootWindow()->getWindowById(kCanvasWindowId));
+            ILayer* temp_layer = canvas->getTempLayer();
+            vec2i mouse_pos    = canvas->getMousePosition();
+
+            IThicknessOption* thickness_bar = static_cast<IThicknessOption*>(getRootWindow()->getWindowById(kOptionsBarWindowId)->getWindowById(kThicknessBarId));
+            if(thickness_bar) {
+                eraser->thickness = thickness_bar->getThickness();
+            }
+
             if (eraser->points_arr.size() < 4) {
                 eraser->points_arr.push_back(mouse_pos);
             } else {

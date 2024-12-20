@@ -31,24 +31,10 @@ private:
     const IWindow* parent;
     std::vector<std::unique_ptr<IBarButton>> toolbar;
 public:
-    ToolBar(vec2i pos_, vec2u size_) : id(kToolBarWindowId), is_active(true), pos(pos_), size(size_), scale(vec2f(1, 1)), parent(nullptr), toolbar() {
-        // if(!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/images/Pencil.png")) {
-        //     //throw std::runtime_error("ошибка открытия файла > " + file + "!");
-        // }
-        sprite.setTexture(&texture);
-        sfm::IntRect rect;
-        rect.pos = {0, 0};
-        rect.size = size;
-        sprite.setTextureRect(rect);
-        sprite.setScale(1, 1);
-        sprite.setColor(sfm::Color(255, 255, 255, 255));
-        sprite.setPosition(pos.x, pos.y);
-    }
+    ToolBar(vec2i pos_, vec2u size_);
     ~ToolBar() = default;
 
     virtual void draw(IRenderWindow* renderWindow);
-
-    // virtual bool update(const IRenderWindow* renderWindow, const Event& event);
 
     virtual wid_t getId() const;
 

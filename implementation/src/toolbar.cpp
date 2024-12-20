@@ -10,9 +10,18 @@ namespace psapi {
 //                                                                          ToolBar
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void ToolBar::draw(IRenderWindow* renderWindow) {
+ToolBar::ToolBar(vec2i pos_, vec2u size_) : id(kToolBarWindowId), is_active(true), pos(pos_), size(size_), scale(vec2f(1, 1)), parent(nullptr), toolbar() {
+    sprite.setTexture(&texture);
+    sfm::IntRect rect;
+    rect.pos = {0, 0};
+    rect.size = size;
+    sprite.setTextureRect(rect);
+    sprite.setScale(1, 1);
+    sprite.setColor(sfm::Color(255, 255, 255, 255));
+    sprite.setPosition(pos.x, pos.y);
+}
 
-    //renderWindow->draw(&sprite);
+void ToolBar::draw(IRenderWindow* renderWindow) {
     sprite.draw(renderWindow);
     for (const auto& button : toolbar) {
         button->draw(renderWindow);
@@ -70,7 +79,8 @@ void ToolBar::finishButtonDraw(IRenderWindow* renderWindow, const IBarButton* bu
 
 bool ToolBar::unPressAllButtons() {
     for (int i = 0; i < toolbar.size(); i++) {
-        toolbar[i].get()->forceDeactivate();
+        //toolbar[i].get()->forceDeactivate();
+        toolbar[i].get()->setState(IBarButton::State::Normal);
     }
     return true;
 }

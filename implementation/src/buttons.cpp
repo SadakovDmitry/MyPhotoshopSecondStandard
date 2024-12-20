@@ -11,25 +11,20 @@ namespace psapi {
 //                                                                         ABarButton
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    void ABarButton::draw(IRenderWindow* renderWindow) {   // different sprites for each state
-        renderWindow->draw(&sprite);
+    void ABarButton::draw(IRenderWindow* renderWindow) {
+        //renderWindow->draw(&sprite);
         switch (getState()) {
             case State::Hover:
-                // std::cout << "Hover button\n";
-                renderWindow->draw(&sprite);
+                renderWindow->draw(&hovered_sprite);
                 break;
             case State::Press:
-                // std::cout << "Press button\n";
-                renderWindow->draw(&sprite);
+                renderWindow->draw(&pressed_sprite);
                 break;
             case State::Released:
-                // std::cout << "Released button\n";
-                renderWindow->draw(&sprite);
+                renderWindow->draw(&released_sprite);
                 break;
             case State::Normal:
-                // std::cout << "Normal button\n";
             default:
-                // std::cout << "default button\n";
                 renderWindow->draw(&sprite);
                 break;
         }

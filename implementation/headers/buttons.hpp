@@ -24,6 +24,12 @@ protected:
     bool is_active;
     sfm::Sprite sprite;
     sfm::Texture texture;
+    sfm::Sprite hovered_sprite;
+    sfm::Texture hovered_texture;
+    sfm::Sprite pressed_sprite;
+    sfm::Texture pressed_texture;
+    sfm::Sprite released_sprite;
+    sfm::Texture released_texture;
     vec2u size;
     vec2i pos;
     vec2f scale;

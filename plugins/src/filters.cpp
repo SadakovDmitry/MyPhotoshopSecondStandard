@@ -25,6 +25,33 @@ namespace psapi {
         if (!texture.loadFromFile(file)) {
             std::cerr << "Error opening file\n";
         }
+        hovered_sprite.setTexture(&texture);
+        hovered_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        hovered_sprite.setScale(1, 1);
+        hovered_sprite.setColor(sfm::Color(255, 255, 255, 255));
+        hovered_sprite.setPosition(pos.x, pos.y);
+
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
+        pressed_sprite.setTexture(&texture);
+        pressed_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        pressed_sprite.setScale(1, 1);
+        pressed_sprite.setColor(sfm::Color(150, 150, 150, 255));
+        pressed_sprite.setPosition(pos.x, pos.y);
+
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
+        released_sprite.setTexture(&texture);
+        released_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        released_sprite.setScale(1, 1);
+        released_sprite.setColor(sfm::Color(255, 255, 255, 255));
+        released_sprite.setPosition(pos.x, pos.y);
+
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
         sprite.setTexture(&texture);
         sprite.setTextureRect(sfm::IntRect({0, 0}, size));
         sprite.setScale(1, 1);
@@ -37,6 +64,33 @@ namespace psapi {
         if (!texture.loadFromFile(file)) {
             std::cerr << "Error opening file\n";
         }
+        hovered_sprite.setTexture(&texture);
+        hovered_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        hovered_sprite.setScale(1, 1);
+        hovered_sprite.setColor(sfm::Color(255, 255, 255, 255));
+        hovered_sprite.setPosition(pos.x, pos.y);
+
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
+        pressed_sprite.setTexture(&texture);
+        pressed_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        pressed_sprite.setScale(1, 1);
+        pressed_sprite.setColor(sfm::Color(150, 150, 150, 255));
+        pressed_sprite.setPosition(pos.x, pos.y);
+
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
+        released_sprite.setTexture(&texture);
+        released_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        released_sprite.setScale(1, 1);
+        released_sprite.setColor(sfm::Color(255, 255, 255, 255));
+        released_sprite.setPosition(pos.x, pos.y);
+
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
         sprite.setTexture(&texture);
         sprite.setTextureRect(sfm::IntRect({0, 0}, size));
         sprite.setScale(1, 1);
@@ -46,6 +100,33 @@ namespace psapi {
 
     NegativeTool::NegativeTool(vec2i pos_, vec2u size_, wid_t id_, const std::string& file)
         : ABarButton(pos_, size_, id_) {
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
+        hovered_sprite.setTexture(&texture);
+        hovered_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        hovered_sprite.setScale(1, 1);
+        hovered_sprite.setColor(sfm::Color(255, 255, 255, 255));
+        hovered_sprite.setPosition(pos.x, pos.y);
+
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
+        pressed_sprite.setTexture(&texture);
+        pressed_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        pressed_sprite.setScale(1, 1);
+        pressed_sprite.setColor(sfm::Color(150, 150, 150, 255));
+        pressed_sprite.setPosition(pos.x, pos.y);
+
+        if (!texture.loadFromFile(file)) {
+            std::cerr << "Error opening file\n";
+        }
+        released_sprite.setTexture(&texture);
+        released_sprite.setTextureRect(sfm::IntRect({0, 0}, size));
+        released_sprite.setScale(1, 1);
+        released_sprite.setColor(sfm::Color(255, 255, 255, 255));
+        released_sprite.setPosition(pos.x, pos.y);
+
         if (!texture.loadFromFile(file)) {
             std::cerr << "Error opening file\n";
         }

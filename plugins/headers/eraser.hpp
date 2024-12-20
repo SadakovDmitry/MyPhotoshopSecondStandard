@@ -18,9 +18,6 @@
 
 namespace psapi {
 
-// const wid_t kToolBarWindowId    = 101;
-// const wid_t kOptionsBarWindowId = 102;
-
 class EraserTool : public ABarButton {
 private:
     friend class EraserAction;
