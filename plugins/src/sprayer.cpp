@@ -82,7 +82,7 @@ namespace psapi {
             // ChildInfo info = toolbar->getNextChildInfo();
             vec2i pos = {toolbar->getPos().x, toolbar->getPos().y};
             vec2u size = {50, 50};
-            auto tool = std::make_unique<SprayerTool>(pos, size, 3, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Sprayer.jpg");
+            auto tool = std::make_unique<SprayerTool>(pos, size, 3, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/Sprayer.jpg");
 
             if (toolbar) {
                 toolbar->addWindow(std::move(tool));

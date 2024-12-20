@@ -144,7 +144,7 @@ namespace psapi {
             // ChildInfo info = toolbar->getNextChildInfo();
             vec2i pos = {toolbar->getPos().x + 50, toolbar->getPos().y};
             vec2u size = {50, 50};
-            auto tool = std::make_unique<PencilTool>(pos, size, 1, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Pencil.png");
+            auto tool = std::make_unique<PencilTool>(pos, size, 1, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/Pencil.png");
 
             if (toolbar) {
                 toolbar->addWindow(std::move(tool));

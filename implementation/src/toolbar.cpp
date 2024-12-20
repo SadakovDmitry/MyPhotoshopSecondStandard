@@ -10,8 +10,6 @@ namespace psapi {
 //                                                                          ToolBar
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// ToolBar::ToolBar(vec2i pos_, vec2i size_) : pos(pos_), size(size_) {}
-
 void ToolBar::draw(IRenderWindow* renderWindow) {
 
     //renderWindow->draw(&sprite);
@@ -19,25 +17,7 @@ void ToolBar::draw(IRenderWindow* renderWindow) {
     for (const auto& button : toolbar) {
         button->draw(renderWindow);
     }
-
-    //std::cout << "draw toolbar\n";
 }
-
-// bool ToolBar::update(const IRenderWindow* renderWindow, const Event& event) {
-//     for (auto& button : toolbar) {
-//         if (button->update(renderWindow, event)) {
-//             if (button->getState() == ABarButton::State::Press) {
-//                 Canvas* canvas = static_cast<Canvas*>(getRootWindow()->getWindowById(psapi::kCanvasWindowId));
-//                 canvas->setActiveTool(static_cast<ABarButton*>(button.get()));
-//                 if(canvas->getActiveTool()) {
-//                     canvas->getActiveTool()->action();
-//                 }
-//             }
-//             return true;
-//         }
-//     }
-//     return false;
-// }
 
 wid_t ToolBar::getId() const { return id; }
 

@@ -158,8 +158,8 @@ namespace psapi {
             vec2i pos = {optionsbar->getPos().x, optionsbar->getPos().y + 160};
             vec2u size = {100, 60};
             auto opacity = std::make_unique<OpacityOption>(pos, size,
-                                            "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/opacity_bar.png",
-                                            "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/thickness_cursor.png");
+                                            "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/opacity_bar.png",
+                                            "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/thickness_cursor.png");
             assert(opacity);
             optionsbar->addWindow(std::move(opacity));
             return true;

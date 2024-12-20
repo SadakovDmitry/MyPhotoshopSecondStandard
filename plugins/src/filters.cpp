@@ -397,19 +397,19 @@ extern "C" {
             // ChildInfo info = menubar->getNextChildInfo();
             vec2i pos = {menubar->getPos().x + 100, menubar->getPos().y};
             vec2u size = {100, 50};
-            auto button = std::make_unique<FiltersButton>(pos, size, kMenuFilterId, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Filters.png");
+            auto button = std::make_unique<FiltersButton>(pos, size, kMenuFilterId, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/Filters.png");
 
             pos = {100, 50};
             size = {100, 20};
-            auto gaus = std::make_unique<BlurTool>(pos, size, 1, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/blur.png");
+            auto gaus = std::make_unique<BlurTool>(pos, size, 1, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/blur.png");
             button->addMenuItem(std::move(gaus));
 
             pos = {100, 70};
-            auto brightness = std::make_unique<BrightnessTool>(pos, size, 2, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/brightness.png");
+            auto brightness = std::make_unique<BrightnessTool>(pos, size, 2, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/brightness.png");
             button->addMenuItem(std::move(brightness));
 
             pos = {100, 90};
-            auto negative = std::make_unique<NegativeTool>(pos, size, 3, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/negative.png");
+            auto negative = std::make_unique<NegativeTool>(pos, size, 3, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/negative.png");
             button->addMenuItem(std::move(negative));
 
             if (menubar) {

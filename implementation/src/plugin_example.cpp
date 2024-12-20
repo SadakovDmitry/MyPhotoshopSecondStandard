@@ -9,38 +9,11 @@
 
 using namespace psapi;
 
-class Instrument : public IWindow {
-public:
-    Instrument(/*const sfm::ASprite* sprite*/) : IWindow() {}
-    // virtual bool update(const IRenderWindow* renderWindow, const Event& event) override { return false; }
-    virtual void draw(IRenderWindow* renderWindow) override {}
-    // ... add other methods
-
-    //virtual void draw(RenderWindow& renderWindow) override {}
-
-    virtual int64_t getId() const override { return kInvalidWindowId; }
-
-    virtual IWindow* getWindowById(wid_t id) override { return nullptr; }
-
-    virtual const IWindow* getWindowById(wid_t id) const override { return nullptr; }
-
-    virtual vec2i getPos() const override { return vec2i(); }
-
-    virtual vec2u getSize() const override { return vec2u(); }
-
-    virtual void setParent(const IWindow* parent) override {}
-
-    virtual void forceActivate() override {}
-
-    virtual void forceDeactivate() override {}
-};
-
 bool loadBasePlugin() {
     std::cout << "in loadbaseplugin:" << getRootWindow() << "\n";
 
     vec2i pos(5, 55);
     vec2u size(100, 700);
-    // ToolBar bar(pos, size);
     auto toolbar = std::make_unique<psapi::ToolBar>(pos, size);
     pos = {150, 150};
     size = {900, 500};

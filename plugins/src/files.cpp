@@ -250,15 +250,15 @@ extern "C" {
             // ChildInfo info = menubar->getNextChildInfo();
             vec2i pos = {menubar->getPos().x + 200, menubar->getPos().y};
             vec2u size = {100, 50};
-            auto button = std::make_unique<FileButton>(pos, size, kMenuFileId, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Files.png");
+            auto button = std::make_unique<FileButton>(pos, size, kMenuFileId, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/Files.png");
 
             pos = {200, 50};
             size = {100, 20};
-            auto gaus = std::make_unique<LoadTool>(pos, size, 1, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/load.png");
+            auto gaus = std::make_unique<LoadTool>(pos, size, 1, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/load.png");
             button->addMenuItem(std::move(gaus));
 
             pos = {200, 70};
-            auto save_tool = std::make_unique<SaveTool>(pos, size, 2, "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/save.png");
+            auto save_tool = std::make_unique<SaveTool>(pos, size, 2, "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/save.png");
             button->addMenuItem(std::move(save_tool));
 
 

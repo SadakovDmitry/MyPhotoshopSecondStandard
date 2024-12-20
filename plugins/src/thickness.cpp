@@ -161,8 +161,8 @@ namespace psapi {
             vec2i pos = {optionsbar->getPos().x, optionsbar->getPos().y + 100};
             vec2u size = {100, 60};
             auto thickness = std::make_unique<ThicknessOption>(pos, size,
-                                                "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/thickness_bar.png",
-                                                "/Users/dima/MIPT/SecondSem/MyPaint2.0/source/thickness_cursor.png");
+                                                "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/thickness_bar.png",
+                                                "/Users/dima/MIPT/SecondSem/MyPaint2.0/images/thickness_cursor.png");
             assert(thickness);
             optionsbar->addWindow(std::move(thickness));
 //             ChildInfo info_thicknessWindow;

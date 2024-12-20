@@ -75,7 +75,7 @@ namespace psapi {
         texture.create(static_cast<unsigned int>(layer_size.x), static_cast<unsigned int>(layer_size.y));
         std::vector<sfm::Color> pix_arr(layer_size.x * layer_size.y, sfm::Color(255, 255, 255, 255));
         texture.loadFromMemory(pix_arr.data(), layer_size.x * layer_size.y, sfm::IntRect(sfm::vec2i(0, 0), sfm::vec2u(size.x, size.y)));
-        // if (!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint/source/Eraser.png")) {
+        // if (!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint/images/Eraser.png")) {
         //     std::cerr << "Error opening file\n";
         // }
         sprite.setTexture(&texture);

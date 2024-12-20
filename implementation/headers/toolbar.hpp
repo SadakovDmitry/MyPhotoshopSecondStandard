@@ -32,7 +32,7 @@ private:
     std::vector<std::unique_ptr<IBarButton>> toolbar;
 public:
     ToolBar(vec2i pos_, vec2u size_) : id(kToolBarWindowId), is_active(true), pos(pos_), size(size_), scale(vec2f(1, 1)), parent(nullptr), toolbar() {
-        // if(!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/Pencil.png")) {
+        // if(!texture.loadFromFile("/Users/dima/MIPT/SecondSem/MyPaint2.0/images/Pencil.png")) {
         //     //throw std::runtime_error("ошибка открытия файла > " + file + "!");
         // }
         sprite.setTexture(&texture);

@@ -195,7 +195,7 @@ namespace psapi {
 
     ScrollBarArrUp::ScrollBarArrUp(vec2i pos_, vec2u size_, wid_t id_, Scrollable* scroll_obj_, const std::string& file)
         : ABarButton(pos_, size_, id_), scroll_obj(scroll_obj_) {
-        if (!texture.loadFromFile(("/Users/dima/MIPT/SecondSem/MyPaint2.0/source/" + file).c_str())) {
+        if (!texture.loadFromFile(("/Users/dima/MIPT/SecondSem/MyPaint2.0/images/" + file).c_str())) {
              std::cerr << "Error opening file\n";
         }
         sprite.setTexture(&texture);
