@@ -1,10 +1,10 @@
 
 #include <dlfcn.h>
-#include "canvas.hpp"
-#include "toolbar.hpp"
+#include "headers/canvas.hpp"
+#include "headers/toolbar.hpp"
 #include <assert.h>
-#include "plugin_example.hpp"
-#include "photoshop.hpp"
+#include "headers/plugin_example.hpp"
+#include "headers/photoshop.hpp"
 #include <QFileDialog>
 #include <QDir>
 #include <QString>
@@ -17,7 +17,7 @@ using namespace psapi;
 using namespace sfm;
 
 void loadPluginfromLib(const std::string& plugin) {
-    void* pluginLib = dlopen(("/Users/dima/MIPT/SecondSem/MyPaint2.0/plugins/" + plugin).c_str(), RTLD_LAZY);
+    void* pluginLib = dlopen(("/Users/dima/MIPT/SecondSem/MyPaint2.0/plugins/dylibs/" + plugin).c_str(), RTLD_LAZY);
     if (!pluginLib) {
         std::cerr << "Failed to load plugin dylib in main: " << dlerror() << "\n";
         assert("loadPluginfromLib" && 0);

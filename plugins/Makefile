@@ -12,14 +12,16 @@ QT_PATH = /usr/local/opt/qt
 PLUGINS = pencil sprayer eraser scrollbar_hor scrollbar_vert filters color_palette thickness opacity_bar files
 
 # Сборка всех плагинов
-all: $(PLUGINS:%=lib%.dylib)
+# all: $(PLUGINS:%=lib%.dylib)
+all: $(foreach plugin,$(PLUGINS),lib$(plugin).dylib)
 
 # Сборка динамической библиотеки плагина
-lib%.dylib: %.cpp $(IMPLEMENTATION_DYLIB)
-	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS)
+lib%.dylib: src/%.cpp $(IMPLEMENTATION_DYLIB)
+	@mkdir -p dylibs
+	$(CXX) $(CXXFLAGS) $< -o dylibs/$@ $(LDFLAGS)
 	@echo "Собран плагин $@"
 
 # Очистка
 clean:
-	rm -f lib*.dylib
+	rm -f dylibs/lib*.dylib
 	@echo "Удалены все скомпилированные плагины"
